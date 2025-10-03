@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PolisongStockApplication {
 
 	public static void main(String[] args) {
+		System.out.println("sapopinga");
 		SpringApplication.run(PolisongStockApplication.class, args);
+		System.out.println("sapopinga");
 	}
 
 }
