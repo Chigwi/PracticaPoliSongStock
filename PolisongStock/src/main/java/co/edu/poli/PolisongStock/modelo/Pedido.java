@@ -33,9 +33,8 @@ public class Pedido {
 	@JoinColumn(name="envioId")
 	private Envio envio;
 	
-	@OneToMany(cascade= CascadeType.ALL)
-	@JoinColumn(name="pedidoId")
-	@Column(name="detallePedido")
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="detallePedidoId")
 	private DetallePedido detallePedido;
 	
 	@OneToOne(cascade=CascadeType.ALL)

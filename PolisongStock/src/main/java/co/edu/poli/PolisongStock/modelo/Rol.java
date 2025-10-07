@@ -1,5 +1,7 @@
 package co.edu.poli.PolisongStock.modelo;
 
+import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,6 +34,6 @@ public class Rol {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "rol")
 	@Column(name="persona")
-	private Persona persona;
+	private List <Persona> personas;
 
 }

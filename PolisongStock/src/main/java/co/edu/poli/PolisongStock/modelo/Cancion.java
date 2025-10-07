@@ -40,7 +40,6 @@ public class Cancion {
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "formato")
-	@Column(name="formato")
 	private Formato formato;
 	
 }

@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -32,8 +33,12 @@ public class Playlist {
 	private String nombre;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "cancion")
-	@Column(name="canciones")
+	
+    @JoinTable(
+            name = "cancionPlaylist",
+            joinColumns = @JoinColumn(name = "playlistId"),
+            inverseJoinColumns = @JoinColumn(name = "cancionId")
+        )
 	private List<Cancion> canciones;
 	
 }

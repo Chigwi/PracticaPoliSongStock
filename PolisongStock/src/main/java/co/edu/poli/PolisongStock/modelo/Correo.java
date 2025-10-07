@@ -28,9 +28,5 @@ public class Correo {
 	
 	@Column(name="direccion")
 	private String direccion;
-	
-	@OneToMany(cascade = CascadeType.ALL)
-	@Column(name="persona")
-	private Persona persona;
 
 }
