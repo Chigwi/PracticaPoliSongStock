@@ -2,7 +2,15 @@ package co.edu.poli.PolisongStock.modelo;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,9 +24,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Playlist {
-
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idPlaylist;
+	
+	@Column(name="nombre")
 	private String nombre;
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "cancion")
+	@Column(name="canciones")
 	private List<Cancion> canciones;
 	
 }
