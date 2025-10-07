@@ -12,7 +12,7 @@ public class PedidoController {
 	
 	@PostMapping 
 	public ResponseEntity<String> create(){
-		return ResponseEntity<String>;
+		return ResponseEntity.ok("Pedido creado");
 		
 	}
 }
