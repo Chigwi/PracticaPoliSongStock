@@ -1,4 +1,4 @@
-package co.edu.poli.PolisongStock.Cancion.Repository;
+package co.edu.poli.PolisongStock.Cancion.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
