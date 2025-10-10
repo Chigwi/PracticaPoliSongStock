@@ -20,8 +20,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableJpaRepositories(
         basePackages = "co.edu.poli.PolisongStock.Usuario.Repository",  // ONLY inventory repositories
-        entityManagerFactoryRef = "usuarioEntityManagerFactory",
-        transactionManagerRef = "usuarioTransactionManager"
+        entityManagerFactoryRef = "usuarioEntityManagerFactory"
     )
 
 public class UsuarioDataSourceConfig {
@@ -45,15 +44,9 @@ public class UsuarioDataSourceConfig {
         return em;
     }
 
-    @Bean(name = "cancionTransactionManager")
-    public PlatformTransactionManager transactionManager(
-            @Qualifier("usuarioEntityManagerFactory") org.springframework.orm.jpa.EntityManagerFactory entityManagerFactory) {
-        return new JpaTransactionManager(entityManagerFactory);
-    }
-
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
+        properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.setProperty("hibernate.show_sql", "true");
         return properties;

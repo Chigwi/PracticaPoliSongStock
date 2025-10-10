@@ -1,6 +1,5 @@
 package co.edu.poli.PolisongStock.Config;
 
-
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -12,22 +11,18 @@ import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.orm.jpa.EntityManagerFactory;  // <-- ADD THIS LINE
-import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.transaction.PlatformTransactionManager;
-
-
 
 @Configuration
 @EnableJpaRepositories(
-	    basePackages = "co.edu.poli.PolisongStock.Cancion.Repository",  // ONLY inventory repositories
-	    entityManagerFactoryRef = "cancionEntityManagerFactory",
-	    transactionManagerRef = "cancionTransactionManager"
-	)
+    basePackages = "co.edu.poli.PolisongStock.Cancion.Repository",
+    entityManagerFactoryRef = "cancionEntityManagerFactory"
+    // No transactionManagerRef - Spring auto-creates JpaTransactionManager for this unit
+)
 public class CancionDataSourceConfig {
-	@Bean(name = "CancionDataSource")
-    @ConfigurationProperties("spring.datasource.cancion")  // Binds to custom properties prefix
+    
+    @Bean(name = "CancionDataSource")
+    @ConfigurationProperties("spring.datasource.cancion")
     public DataSource dataSource() {
         return DataSourceBuilder.create().build();
     }
@@ -38,26 +33,20 @@ public class CancionDataSourceConfig {
             @Qualifier("CancionDataSource") DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean em = builder
                 .dataSource(dataSource)
-                .packages("co.edu.poli.PolisongStock.Cancion.Modelo")  // ONLY inventory entities
+                .packages("co.edu.poli.PolisongStock.Cancion.Modelo")
                 .persistenceUnit("cancion")
                 .build();
         em.setJpaProperties(hibernateProperties());
         return em;
     }
 
-    @Bean(name = "cancionTransactionManager")
-    public PlatformTransactionManager transactionManager(
-            @Qualifier("cancionEntityManagerFactory") org.springframework.orm.jpa.EntityManagerFactory entityManagerFactory) {
-        return new JpaTransactionManager(entityManagerFactory);
-    }
-    
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
+        properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.setProperty("hibernate.show_sql", "true");
         return properties;
     }
-	
 
+    // Transaction manager is auto-configured by Spring Boot - no bean needed!
 }

@@ -4,7 +4,9 @@ import java.util.List;
 
 import co.edu.poli.PolisongStock.RegistroCanciones.modelo.Cancion;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,9 +31,9 @@ public class DetallePedido {
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long idDetallePedido;
 
-	@OneToMany(cascade= CascadeType.ALL)
-	@JoinColumn(name="detallePedidoId")
-	@Column(name="canciones")
-	private List<Cancion> caniones;
+    @ElementCollection  // Or a simple List if no complex associations needed
+    @CollectionTable(name = "detalleProductos", joinColumns = @JoinColumn(name = "detalleId"))
+    @Column(name = "CancionId")
+	private List<Long> caniones;
 
 }

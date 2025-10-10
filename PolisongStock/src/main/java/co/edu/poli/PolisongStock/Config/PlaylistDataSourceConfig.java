@@ -9,9 +9,17 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
+
+@Configuration
+@EnableJpaRepositories(
+        basePackages = "co.edu.poli.PolisongStock.RegistroPlaylist.Repository",  // ONLY inventory repositories
+        entityManagerFactoryRef = "usuarioEntityManagerFactory"
+    )
 
 public class PlaylistDataSourceConfig {
 	@Bean(name = "PlaylistDataSource")
@@ -33,15 +41,9 @@ public class PlaylistDataSourceConfig {
         return em;
     }
 
-    @Bean(name = "playlistTransactionManager")
-    public PlatformTransactionManager transactionManager(
-            @Qualifier("playlistEntityManagerFactory") org.springframework.orm.jpa.EntityManagerFactory entityManagerFactory) {
-        return new JpaTransactionManager(entityManagerFactory);
-    }
-    
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
+        properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.setProperty("hibernate.show_sql", "true");
         return properties;
