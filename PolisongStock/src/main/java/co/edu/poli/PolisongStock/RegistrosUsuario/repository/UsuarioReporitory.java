@@ -5,9 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import co.edu.poli.PolisongStock.RegistroUsuario.modelo.Persona;
 
-
-
-@Repository
-public interface UsuarioReporitory extends JpaRepository<Persona, Long>{
+public interface UsuarioReporitory {
 
 }
