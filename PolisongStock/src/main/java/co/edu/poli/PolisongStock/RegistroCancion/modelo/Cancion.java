@@ -1,4 +1,4 @@
-package co.edu.poli.PolisongStock.RegistroCanciones.modelo;
+package co.edu.poli.PolisongStock.RegistroCancion.modelo;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

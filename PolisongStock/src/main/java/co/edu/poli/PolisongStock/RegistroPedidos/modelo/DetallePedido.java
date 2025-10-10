@@ -2,7 +2,7 @@ package co.edu.poli.PolisongStock.RegistroPedidos.modelo;
 
 import java.util.List;
 
-import co.edu.poli.PolisongStock.RegistroCanciones.modelo.Cancion;
+import co.edu.poli.PolisongStock.RegistroCancion.modelo.Cancion;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;

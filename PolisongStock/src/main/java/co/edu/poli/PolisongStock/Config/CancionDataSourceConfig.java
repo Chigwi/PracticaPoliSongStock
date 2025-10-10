@@ -13,27 +13,45 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
 @Configuration
 @EnableJpaRepositories(
-    basePackages = "co.edu.poli.PolisongStock.Cancion.Repository",
+    basePackages = "co.edu.poli.PolisongStock.RegistroCancion.repository",
     entityManagerFactoryRef = "cancionEntityManagerFactory"
     // No transactionManagerRef - Spring auto-creates JpaTransactionManager for this unit
 )
 public class CancionDataSourceConfig {
     
-    @Bean(name = "CancionDataSource")
-    @ConfigurationProperties("spring.datasource.cancion")
+	@Bean(name = "cancionDataSource")
     public DataSource dataSource() {
-        return DataSourceBuilder.create().build();
+        // HARDCODED TEST: Replace with your Supabase details
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl("jdbc:postgresql://aws-1-us-east-2.pooler.supabase.com:6543/postgres?sslmode=require");
+        config.setUsername("postgres.ejbfypdljlyopvcxvbno");
+        config.setPassword("Servidor123");
+        config.setDriverClassName("org.postgresql.Driver");
+        config.setMaximumPoolSize(10);
+        config.setMinimumIdle(5);
+        config.setConnectionTestQuery("SELECT 1");
+        config.setConnectionTimeout(30000);
+        config.setValidationTimeout(5000);
+        config.setAutoCommit(false);
+
+        DataSource ds = new HikariDataSource(config);
+        System.out.println("HARDCODED DataSource created with URL: " + config.getJdbcUrl());  // Confirm in console
+        return ds;
     }
+
 
     @Bean(name = "cancionEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(
             EntityManagerFactoryBuilder builder,
-            @Qualifier("CancionDataSource") DataSource dataSource) {
+            @Qualifier("cancionDataSource") DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean em = builder
                 .dataSource(dataSource)
-                .packages("co.edu.poli.PolisongStock.Cancion.Modelo")
+                .packages("co.edu.poli.PolisongStock.RegistroCancion.Modelo")
                 .persistenceUnit("cancion")
                 .build();
         em.setJpaProperties(hibernateProperties());
