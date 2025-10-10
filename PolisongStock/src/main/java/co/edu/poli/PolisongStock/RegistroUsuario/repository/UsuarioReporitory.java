@@ -1,4 +1,4 @@
-package co.edu.poli.PolisongStock.RegistrosUsuario.repository;
+package co.edu.poli.PolisongStock.RegistroUsuario.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

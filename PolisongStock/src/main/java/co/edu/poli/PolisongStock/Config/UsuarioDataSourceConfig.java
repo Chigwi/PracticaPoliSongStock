@@ -23,13 +23,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "co.edu.poli.PolisongStock.Usuario.Repository",  // ONLY inventory repositories
+        basePackages = "co.edu.poli.PolisongStock.RegistroUsuario.Repository",  // ONLY inventory repositories
         entityManagerFactoryRef = "usuarioEntityManagerFactory"
     )
 
 public class UsuarioDataSourceConfig {
 
-	@Bean(name = "UsuarioDataSource")
+	@Bean(name = "usuarioDataSource")
     public DataSource dataSource() {
         // HARDCODED TEST: Replace with your Supabase details
         HikariConfig config = new HikariConfig();
@@ -52,10 +52,10 @@ public class UsuarioDataSourceConfig {
     @Bean(name = "usuarioEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(
             EntityManagerFactoryBuilder builder,
-            @Qualifier("UsuarioDataSource") DataSource dataSource) {
+            @Qualifier("usuarioDataSource") DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean em = builder
                 .dataSource(dataSource)
-                .packages("co.edu.poli.PolisongStock.Usuario.Modelo")  // ONLY inventory entities
+                .packages("co.edu.poli.PolisongStock.RegistroUsuario.Modelo")  // ONLY inventory entities
                 .persistenceUnit("usuario")
                 .build();
         em.setJpaProperties(hibernateProperties());

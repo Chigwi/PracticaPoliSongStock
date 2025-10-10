@@ -4,7 +4,9 @@ import java.util.List;
 
 import co.edu.poli.PolisongStock.RegistroCancion.modelo.Cancion;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,13 +35,9 @@ public class Playlist {
 	@Column(name="nombre")
 	private String nombre;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-	
-    @JoinTable(
-            name = "cancionPlaylist",
-            joinColumns = @JoinColumn(name = "playlistId"),
-            inverseJoinColumns = @JoinColumn(name = "cancionId")
-        )
-	private List<Cancion> canciones;
+	 @ElementCollection  // Or a simple List if no complex associations needed
+	    @CollectionTable(name = "detalleCanciones", joinColumns = @JoinColumn(name = "detalleId"))
+	    @Column(name = "CancionId")
+	private List<Long> canciones;
 	
 }

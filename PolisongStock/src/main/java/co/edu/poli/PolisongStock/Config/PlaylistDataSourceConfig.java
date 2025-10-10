@@ -25,7 +25,7 @@ import com.zaxxer.hikari.HikariDataSource;
     )
 
 public class PlaylistDataSourceConfig {
-	@Bean(name = "PlaylistDataSource")
+	@Bean(name = "playlistDataSource")
 	 public DataSource dataSource() {
         // HARDCODED TEST: Replace with your Supabase details
         HikariConfig config = new HikariConfig();
@@ -48,10 +48,10 @@ public class PlaylistDataSourceConfig {
     @Bean(name = "PlaylistEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(
             EntityManagerFactoryBuilder builder,
-            @Qualifier("PlaylistDataSource") DataSource dataSource) {
+            @Qualifier("playlistDataSource") DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean em = builder
                 .dataSource(dataSource)
-                .packages("co.edu.poli.PolisongStock.Playlist.Modelo")  // ONLY inventory entities
+                .packages("co.edu.poli.PolisongStock.RegistroPlaylist.Modelo")  // ONLY inventory entities
                 .persistenceUnit("playlist")
                 .build();
         em.setJpaProperties(hibernateProperties());
