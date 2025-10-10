@@ -1,4 +1,4 @@
-package co.edu.poli.PolisongStock.RegistroCanciones.Modelo;
+package co.edu.poli.PolisongStock.RegistroCanciones.modelo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,8 +1,8 @@
-package co.edu.poli.PolisongStock.RegistroPlaylist.Modelo;
+package co.edu.poli.PolisongStock.RegistroPlaylist.modelo;
 
 import java.util.List;
 
-import co.edu.poli.PolisongStock.RegistroCanciones.Modelo.Cancion;
+import co.edu.poli.PolisongStock.RegistroCanciones.modelo.Cancion;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,4 +1,4 @@
-package co.edu.poli.PolisongStock.RegistroPedidos.Modelo;
+package co.edu.poli.PolisongStock.RegistroPedidos.modelo;
 
 import org.hibernate.annotations.ValueGenerationType;
 
