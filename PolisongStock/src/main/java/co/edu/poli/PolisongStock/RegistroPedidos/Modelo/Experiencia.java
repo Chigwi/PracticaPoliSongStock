@@ -1,4 +1,4 @@
-package co.edu.poli.PolisongStock.modelo;
+package co.edu.poli.PolisongStock.RegistroPedidos.Modelo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,24 +10,23 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Entity
 
-@Table(name="Formato")
+@Table(name="Experiencia")
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Formato {
+public class Experiencia {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idFormato;
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	private Long idExperiencia;
 	
-	@Column(name="nombre")
-	private String nombre;
+	@Column(name="calificacion")
+	private Integer calificacion;
 	
-	@Column(name="cantidad")
-	private Integer cantidad;
+	@Column(name="descripcion")
+	private String descripcion;
 	
 }

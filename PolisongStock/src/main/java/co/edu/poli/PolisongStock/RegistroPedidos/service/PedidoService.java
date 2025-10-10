@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.edu.poli.PolisongStock.RegistroPedidos.Modelo.Pedido;
 import co.edu.poli.PolisongStock.RegistroPedidos.repository.PedidoRepository;
-import co.edu.poli.PolisongStock.modelo.Pedido;
 
 @Service
 public class PedidoService {

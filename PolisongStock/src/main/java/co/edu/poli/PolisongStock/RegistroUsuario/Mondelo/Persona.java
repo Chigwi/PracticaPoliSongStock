@@ -1,4 +1,4 @@
-package co.edu.poli.PolisongStock.modelo;
+package co.edu.poli.PolisongStock.RegistroUsuario.Mondelo;
 
 import java.util.List;
 

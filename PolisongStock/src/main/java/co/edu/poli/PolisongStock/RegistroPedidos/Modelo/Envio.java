@@ -1,12 +1,10 @@
-package co.edu.poli.PolisongStock.modelo;
+package co.edu.poli.PolisongStock.RegistroPedidos.Modelo;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,19 +12,24 @@ import lombok.NoArgsConstructor;
 
 @Entity
 
-@Table(name="Correo")
+@Table(name="Envio")
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+public class Envio {
 
-public class Correo {
-	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idCorreo;
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	private Long idEnvio;
 	
-	@Column(name="direccion")
-	private String direccion;
-
+	@Column(name="empresaEnvios")
+	private String empresaEnvios;
+	
+	@Column(name="esAereo")
+	private Boolean esAereo;
+	
+	@Column(name="estimacionLlegada")
+	private String estimacionLlegada;
+	
 }
