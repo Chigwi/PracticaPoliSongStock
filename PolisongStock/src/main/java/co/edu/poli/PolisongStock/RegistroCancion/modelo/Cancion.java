@@ -33,7 +33,7 @@ public class Cancion {
 	private String artista;
 	
 	@Column(name="annoPublicacion")
-	private String annoPublicaion;
+	private String annoPublicacion;
 	
 	@Column(name="precio")
 	private Double precio;
