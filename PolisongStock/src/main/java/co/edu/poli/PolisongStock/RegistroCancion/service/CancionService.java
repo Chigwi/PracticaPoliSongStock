@@ -16,14 +16,14 @@ public class CancionService {
 	@Autowired
 	private CancionRepository cancionRepository;
 	
-	public Cancion createPedido(Cancion cancion) {
+	public Cancion createCancion(Cancion cancion) {
 		return cancionRepository.save(cancion); // This triggers JPA to insert into DB
 	}
 
-	public List getAllPedidos() {
+	public List getAllCancion() {
 		return cancionRepository.findAll();
 	}
-	public boolean deletePedido(Long id) {
+	public boolean deleteCancion(Long id) {
 	    if (cancionRepository.existsById(id)) {
 	        cancionRepository.deleteById(id);
 	        return true;
@@ -31,7 +31,7 @@ public class CancionService {
 	    return false;  // Returns false if ID not found
 	}
 
-	public Optional<Cancion> getPedidoById(Long id) {
+	public Optional<Cancion> getCancionById(Long id) {
 	    return cancionRepository.findById(id);
 	}
 
