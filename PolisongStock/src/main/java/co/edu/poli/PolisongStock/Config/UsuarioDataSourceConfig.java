@@ -43,6 +43,15 @@ public class UsuarioDataSourceConfig {
         config.setConnectionTimeout(30000);
         config.setValidationTimeout(5000);
         config.setAutoCommit(false);
+        
+
+        // Evitar prepared statements del lado servidor que causan colisiones en Postgres
+        config.addDataSourceProperty("prepareThreshold", "0");
+        config.addDataSourceProperty("preferQueryMode", "simple");
+
+        // Dejar autoCommit por defecto (true) para evitar errores al cambiar auto-commit durante DDL
+        config.setAutoCommit(false);
+
 
         DataSource ds = new HikariDataSource(config);
         System.out.println("HARDCODED DataSource created with URL: " + config.getJdbcUrl());  // Confirm in console

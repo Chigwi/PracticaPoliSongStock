@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.poli.PolisongStock.RegistroCancion.modelo.Cancion;
 import co.edu.poli.PolisongStock.RegistroCancion.repository.CancionRepository;
@@ -16,9 +17,10 @@ public class CancionService {
 	@Autowired
 	private CancionRepository cancionRepository;
 	
+	@Transactional
 	public Cancion createCancion(Cancion cancion) {
 		System.out.println(cancion);
-		return cancionRepository.save(cancion); // This triggers JPA to insert into DB
+		return cancionRepository.saveAndFlush(cancion); // This triggers JPA to insert into DB
 	}
 
 	public List getAllCancion() {
