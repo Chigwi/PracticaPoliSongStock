@@ -21,7 +21,8 @@ import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 @EnableJpaRepositories(
         basePackages = "co.edu.poli.PolisongStock.RegistroPlaylist.repository",  // ONLY inventory repositories
-        entityManagerFactoryRef = "PlaylistEntityManagerFactory"
+        entityManagerFactoryRef = "PlaylistEntityManagerFactory",
+        transactionManagerRef = "PlaylistTransactionManager"
     )
 
 public class PlaylistDataSourceConfig {
@@ -67,6 +68,12 @@ public class PlaylistDataSourceConfig {
         return em;
     }
 
+    @Bean(name = "PlaylistTransactionManager")
+    public PlatformTransactionManager cancionTransactionManager(
+            @Qualifier("cancionEntityManagerFactory") LocalContainerEntityManagerFactoryBean emf) {
+        return new JpaTransactionManager(emf.getObject());
+    }
+    
     private Properties hibernateProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update");

@@ -24,7 +24,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableJpaRepositories(
         basePackages = "co.edu.poli.PolisongStock.RegistroUsuario.Repository",  // ONLY inventory repositories
-        entityManagerFactoryRef = "usuarioEntityManagerFactory"
+        entityManagerFactoryRef = "usuarioEntityManagerFactory",
+        transactionManagerRef = "usuarioTransactionManager"
     )
 
 public class UsuarioDataSourceConfig {
@@ -69,6 +70,12 @@ public class UsuarioDataSourceConfig {
                 .build();
         em.setJpaProperties(hibernateProperties());
         return em;
+    }
+    
+    @Bean(name = "usuarioTransactionManager")
+    public PlatformTransactionManager cancionTransactionManager(
+            @Qualifier("cancionEntityManagerFactory") LocalContainerEntityManagerFactoryBean emf) {
+        return new JpaTransactionManager(emf.getObject());
     }
 
     private Properties hibernateProperties() {

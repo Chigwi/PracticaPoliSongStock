@@ -11,7 +11,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -19,7 +21,8 @@ import java.util.Properties;
 @Configuration
 @EnableJpaRepositories(
     basePackages = "co.edu.poli.PolisongStock.RegistroPedidos.repository",
-    entityManagerFactoryRef = "pedidosEntityManagerFactory"
+    entityManagerFactoryRef = "pedidosEntityManagerFactory",
+    transactionManagerRef = "pedidosTransactionManager"
 )
 public class PedidoDataSourceConfig {
 
@@ -69,6 +72,12 @@ public class PedidoDataSourceConfig {
         return em;
     }
 
+    @Bean(name = "pedidosTransactionManager")
+    public PlatformTransactionManager cancionTransactionManager(
+            @Qualifier("cancionEntityManagerFactory") LocalContainerEntityManagerFactoryBean emf) {
+        return new JpaTransactionManager(emf.getObject());
+    }
+    
     private Properties hibernateProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update");

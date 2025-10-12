@@ -17,10 +17,9 @@ public class CancionService {
 	@Autowired
 	private CancionRepository cancionRepository;
 	
-	@Transactional
 	public Cancion createCancion(Cancion cancion) {
 		System.out.println(cancion);
-		return cancionRepository.saveAndFlush(cancion); // This triggers JPA to insert into DB
+		return cancionRepository.save(cancion); // This triggers JPA to insert into DB
 	}
 
 	public List getAllCancion() {
