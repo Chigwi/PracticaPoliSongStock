@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.poli.PolisongStock.RegistroPlaylist.modelo.Playlist;
-import co.edu.poli.PolisongStock.RegistroPlaylist.respository.PlaylistRepository;
+import co.edu.poli.PolisongStock.RegistroPlaylist.repository.PlaylistRepository;
 
 
 @Service

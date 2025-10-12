@@ -29,6 +29,7 @@ public class CancionDataSourceConfig {
         // HARDCODED TEST: Replace with your Supabase details
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl("jdbc:postgresql://aws-1-us-east-2.pooler.supabase.com:6543/postgres?sslmode=require");
+        System.out.println("sapopinga!");
         config.setUsername("postgres.ejbfypdljlyopvcxvbno");
         config.setPassword("Servidor123");
         config.setDriverClassName("org.postgresql.Driver");

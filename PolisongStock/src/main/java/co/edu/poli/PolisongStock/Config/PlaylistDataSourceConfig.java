@@ -20,8 +20,8 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "co.edu.poli.PolisongStock.RegistroPlaylist.Repository",  // ONLY inventory repositories
-        entityManagerFactoryRef = "usuarioEntityManagerFactory"
+        basePackages = "co.edu.poli.PolisongStock.RegistroPlaylist.repository",  // ONLY inventory repositories
+        entityManagerFactoryRef = "PlaylistEntityManagerFactory"
     )
 
 public class PlaylistDataSourceConfig {
