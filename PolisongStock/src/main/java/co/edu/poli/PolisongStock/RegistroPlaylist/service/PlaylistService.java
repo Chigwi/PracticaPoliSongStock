@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.poli.PolisongStock.RegistroCancion.dto.CancionCreateDto;
 import co.edu.poli.PolisongStock.RegistroCancion.modelo.Cancion;
+import co.edu.poli.PolisongStock.RegistroCancion.modelo.Formato;
 import co.edu.poli.PolisongStock.RegistroCancion.repository.CancionRepository;
 import co.edu.poli.PolisongStock.RegistroPlaylist.dto.PlaylistCreateDto;
 import co.edu.poli.PolisongStock.RegistroPlaylist.modelo.Playlist;
@@ -94,7 +95,16 @@ public class PlaylistService {
 		  newCancion.setAnnoPublicacion(dto.getAnnoPublicacion() != null ? dto.getAnnoPublicacion() : "Unknown");
 		  newCancion.setPrecio(dto.getPrecio() != null ? dto.getPrecio() : 0.0);
 		  
-		  
+		  if(dto.getFormato()!= null) {
+			  Formato formato = new Formato();
+			  formato.setNombre(dto.getFormato().getNombre());
+			  formato.setCantidad(dto.getFormato().getCantidad());
+			  
+			  newCancion.setFormato(formato);
+		  }
+		  Cancion savedCancion = cancionRepository.save(newCancion);
+		  System.out.println("Created new Cancion ID: " + savedCancion.getIdCancion() + " - " + dto.getNombre());
+		  return savedCancion.getIdCancion();
 		  
 	  }
 
