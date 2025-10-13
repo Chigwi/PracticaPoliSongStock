@@ -18,7 +18,6 @@ public class CancionService {
 	private CancionRepository cancionRepository;
 	
 	public Cancion createCancion(Cancion cancion) {
-		System.out.println(cancion);
 		return cancionRepository.save(cancion); // This triggers JPA to insert into DB
 	}
 
