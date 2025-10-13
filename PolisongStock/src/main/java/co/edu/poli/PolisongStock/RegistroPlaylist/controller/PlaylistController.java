@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,19 +39,19 @@ public class PlaylistController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Playlist> getById(Long id){
+	public ResponseEntity<Playlist> getById(@PathVariable Long id){
 		Optional<Playlist> playlist = playlistService.getPlaylistById(id);
         return playlist.map(ResponseEntity::ok)
                      .orElse(ResponseEntity.notFound().build());	
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<String> update(Long id, String updatePlaylist){
+	public ResponseEntity<String> update( @PathVariable Long id, @RequestBody String updatePlaylist){
 		return ResponseEntity.ok("playlist actualizada");
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> delete (Long id){
+	public ResponseEntity<String> delete (@PathVariable Long id){
 		boolean deleted = playlistService.deletePlaylist(id);
 		if (deleted) {
 			return ResponseEntity.noContent().build(); // 204 No Content on success

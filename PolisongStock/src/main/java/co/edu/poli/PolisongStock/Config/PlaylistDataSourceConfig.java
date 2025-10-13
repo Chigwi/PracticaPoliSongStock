@@ -20,15 +20,14 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "co.edu.poli.PolisongStock.RegistroPlaylist.repository",  // ONLY inventory repositories
-        entityManagerFactoryRef = "PlaylistEntityManagerFactory",
-        transactionManagerRef = "PlaylistTransactionManager"
-    )
-
+    basePackages = "co.edu.poli.PolisongStock.RegistroPlaylist.repository",
+    entityManagerFactoryRef = "PlaylistEntityManagerFactory",
+    transactionManagerRef = "PlaylistTransactionManager"
+)
 public class PlaylistDataSourceConfig {
-	@Bean(name = "playlistDataSource")
-	 public DataSource dataSource() {
-        // HARDCODED TEST: Replace with your Supabase details
+
+    @Bean(name = "playlistDataSource")
+    public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl("jdbc:postgresql://aws-1-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require");
         config.setUsername("postgres.fqrjhkplaxmoqkvfdfus");
@@ -39,19 +38,14 @@ public class PlaylistDataSourceConfig {
         config.setConnectionTestQuery("SELECT 1");
         config.setConnectionTimeout(30000);
         config.setValidationTimeout(5000);
-        
 
-        // Evitar prepared statements del lado servidor que causan colisiones en Postgres
         config.addDataSourceProperty("prepareThreshold", "0");
         config.addDataSourceProperty("preferQueryMode", "simple");
 
-        // Dejar autoCommit por defecto (true) para evitar errores al cambiar auto-commit durante DDL
+        // Para pruebas deja autoCommit true
         config.setAutoCommit(false);
 
-        System.out.println("spp");
-        DataSource ds = new HikariDataSource(config);
-        System.out.println("HARDCODED DataSource created with URL: " + config.getJdbcUrl());  // Confirm in console
-        return ds;
+        return new HikariDataSource(config);
     }
 
     @Bean(name = "PlaylistEntityManagerFactory")
@@ -60,7 +54,7 @@ public class PlaylistDataSourceConfig {
             @Qualifier("playlistDataSource") DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean em = builder
                 .dataSource(dataSource)
-                .packages("co.edu.poli.PolisongStock.RegistroPlaylist.Modelo")  // ONLY inventory entities
+                .packages("co.edu.poli.PolisongStock.RegistroPlaylist.modelo") // corregido a 'modelo'
                 .persistenceUnit("playlist")
                 .build();
         em.setJpaProperties(hibernateProperties());
@@ -68,11 +62,11 @@ public class PlaylistDataSourceConfig {
     }
 
     @Bean(name = "PlaylistTransactionManager")
-    public PlatformTransactionManager cancionTransactionManager(
-            @Qualifier("cancionEntityManagerFactory") LocalContainerEntityManagerFactoryBean emf) {
+    public PlatformTransactionManager PlaylistTransactionManager(
+            @Qualifier("PlaylistEntityManagerFactory") LocalContainerEntityManagerFactoryBean emf) {
         return new JpaTransactionManager(emf.getObject());
     }
-    
+
     private Properties hibernateProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
@@ -80,6 +74,4 @@ public class PlaylistDataSourceConfig {
         properties.setProperty("hibernate.show_sql", "true");
         return properties;
     }
-	
-
 }
