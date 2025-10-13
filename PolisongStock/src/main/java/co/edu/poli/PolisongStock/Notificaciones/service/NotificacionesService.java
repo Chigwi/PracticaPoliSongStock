@@ -17,6 +17,7 @@ public class NotificacionesService {
 		message.setTo(toEmail);
 		message.setSubject(subject);
 		message.setText(body);
+		javaMailSender.send(message);
 	}
 
 }
