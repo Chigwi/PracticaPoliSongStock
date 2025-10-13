@@ -36,22 +36,21 @@ public class CancionController {
 		Cancion saved = cancionService.createCancion(cancion);
 		return ResponseEntity.ok(saved);
 	}
-	@PostMapping("/{mail}") 
-	public String sendMail(@RequestBody Notificacion n){
-		notificacionService.sendEmail(n);
-		return "Email sent!";
-	}
 	
 	@GetMapping
 	public ResponseEntity<List<Cancion>> getAll(){
 		return ResponseEntity.ok(cancionService.getAllCancion());
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/cancion/{id}")
 	public ResponseEntity<Cancion> getById(@PathVariable Long id){
 		Optional<Cancion> cancion = cancionService.getCancionById(id);
         return cancion.map(ResponseEntity::ok)
                      .orElse(ResponseEntity.notFound().build());	
+	}
+	@GetMapping("/formato/{nombre}")
+	public ResponseEntity<List<Cancion>> getByFormato(@PathVariable String nombre){
+		return ResponseEntity.ok(cancionService.getByFormatoNombre(nombre));
 	}
 	
 	@PutMapping("/{id}")

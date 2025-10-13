@@ -35,6 +35,8 @@ public class CancionService {
 	public Optional<Cancion> getCancionById(Long id) {
 	    return cancionRepository.findById(id);
 	}
-
+	public List <Cancion>getByFormatoNombre(String nombre){
+		return cancionRepository.findAllByFormatoNombre(nombre);
+	}
 
 }
