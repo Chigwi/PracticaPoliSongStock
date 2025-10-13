@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.poli.PolisongStock.Notificaciones.modelo.Notificacion;
+import co.edu.poli.PolisongStock.Notificaciones.service.NotificacionesService;
 import co.edu.poli.PolisongStock.RegistroCancion.modelo.Cancion;
 import co.edu.poli.PolisongStock.RegistroCancion.service.CancionService;
 
@@ -26,10 +28,18 @@ public class CancionController {
 	@Autowired
 	private CancionService cancionService;
 	
+	@Autowired
+	private NotificacionesService notificacionService;
+	
 	@PostMapping 
 	public ResponseEntity<Cancion> create(@RequestBody Cancion cancion){
 		Cancion saved = cancionService.createCancion(cancion);
 		return ResponseEntity.ok(saved);
+	}
+	@PostMapping("/{mail}") 
+	public String sendMail(@RequestBody Notificacion n){
+		notificacionService.sendEmail(n);
+		return "Email sent!";
 	}
 	
 	@GetMapping

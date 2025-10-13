@@ -5,18 +5,20 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import co.edu.poli.PolisongStock.Notificaciones.modelo.Notificacion;
+
 @Service
 public class NotificacionesService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	private void sendEmail(String toEmail, String subject,String body) {
+	public void sendEmail(Notificacion n) {
 		
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom("polisongstock@gmail.com");
-		message.setTo(toEmail);
-		message.setSubject(subject);
-		message.setText(body);
+		message.setTo(n.getToEmail());
+		message.setSubject(n.getSubject());
+		message.setText(n.getBody());
 		javaMailSender.send(message);
 	}
 
