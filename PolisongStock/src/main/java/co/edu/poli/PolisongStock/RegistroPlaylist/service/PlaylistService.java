@@ -1,5 +1,6 @@
 package co.edu.poli.PolisongStock.RegistroPlaylist.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.poli.PolisongStock.RegistroCancion.dto.CancionCreateDto;
+import co.edu.poli.PolisongStock.RegistroCancion.modelo.Cancion;
+import co.edu.poli.PolisongStock.RegistroCancion.repository.CancionRepository;
+import co.edu.poli.PolisongStock.RegistroPlaylist.dto.PlaylistCreateDto;
 import co.edu.poli.PolisongStock.RegistroPlaylist.modelo.Playlist;
 import co.edu.poli.PolisongStock.RegistroPlaylist.repository.PlaylistRepository;
 
@@ -15,6 +20,9 @@ import co.edu.poli.PolisongStock.RegistroPlaylist.repository.PlaylistRepository;
 public class PlaylistService {
 	@Autowired
 	private PlaylistRepository playlistRepository;
+	
+	@Autowired
+	private CancionRepository cancionRepository;
 	
 	@Transactional(transactionManager = "PlaylistTransactionManager")
 	public Playlist createPlaylist(Playlist playlist) {
@@ -45,6 +53,49 @@ public class PlaylistService {
 	      p.get().getCanciones().size();
 	    }
 	    return p;
+	  }
+	  
+	  public Playlist findOrCreatePlaylist(PlaylistCreateDto dto) {
+		  Optional<Playlist> existingPlaylist = playlistRepository.findByNombre(dto.getNombre());
+		  Playlist playlist;
+		  
+		  if(existingPlaylist.isPresent()) {
+			  playlist = existingPlaylist.get();
+			  System.out.println("Playlist found" + playlist.getNombre());
+		  }else {
+			  playlist = new Playlist();
+			  playlist.setNombre(dto.getNombre());
+			  playlist.setCanciones(new ArrayList<>());
+			  System.out.println("Playlist created" + dto.getNombre());
+		  }
+		  
+		  if(dto.getCanciones() != null && !dto.getCanciones().isEmpty()) {
+			  for(CancionCreateDto songDto : dto.getCanciones()) {
+				  Long cancionId = findOrCreateCancion(songDto);
+				  if(cancionId != null) {
+					  playlist.getCanciones().add(cancionId);
+				  }
+			  }
+		  }
+		  
+		  Playlist saved = playlistRepository.save(playlist);
+		  System.out.println("Saved Playlist ID: " + saved.getIdPlaylist() + " with " + saved.getCanciones().size() + " songs");
+		  return saved;
+	  }
+	  private Long findOrCreateCancion (CancionCreateDto dto) {
+		  Optional <Cancion> existingCancion = cancionRepository.findByNombreAndArtista(dto.getNombre(), dto.getArtista());
+		  if(existingCancion.isPresent()) {
+			  return existingCancion.get().getIdCancion();
+		  }
+		  
+		  Cancion newCancion = new Cancion();
+		  newCancion.setNombre(dto.getNombre());
+		  newCancion.setArtista(dto.getArtista());
+		  newCancion.setAnnoPublicacion(dto.getAnnoPublicacion() != null ? dto.getAnnoPublicacion() : "Unknown");
+		  newCancion.setPrecio(dto.getPrecio() != null ? dto.getPrecio() : 0.0);
+		  
+		  
+		  
 	  }
 
 }
