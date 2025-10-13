@@ -73,8 +73,8 @@ public class UsuarioDataSourceConfig {
     }
     
     @Bean(name = "usuarioTransactionManager")
-    public PlatformTransactionManager cancionTransactionManager(
-            @Qualifier("cancionEntityManagerFactory") LocalContainerEntityManagerFactoryBean emf) {
+    public PlatformTransactionManager usuarioTransactionManager(
+            @Qualifier("usuarioEntityManagerFactory") LocalContainerEntityManagerFactoryBean emf) {
         return new JpaTransactionManager(emf.getObject());
     }
 

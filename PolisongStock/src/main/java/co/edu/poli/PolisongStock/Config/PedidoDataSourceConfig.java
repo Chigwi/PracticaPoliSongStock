@@ -73,8 +73,8 @@ public class PedidoDataSourceConfig {
     }
 
     @Bean(name = "pedidosTransactionManager")
-    public PlatformTransactionManager cancionTransactionManager(
-            @Qualifier("cancionEntityManagerFactory") LocalContainerEntityManagerFactoryBean emf) {
+    public PlatformTransactionManager pedidoTransactionManager(
+            @Qualifier("pedidosEntityManagerFactory") LocalContainerEntityManagerFactoryBean emf) {
         return new JpaTransactionManager(emf.getObject());
     }
     
