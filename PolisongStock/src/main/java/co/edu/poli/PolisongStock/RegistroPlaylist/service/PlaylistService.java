@@ -60,7 +60,7 @@ public class PlaylistService {
 	    }
 	    return p;
 	  }
-	  @Transactional(transactionManager = "PlaylistTransactionManager", readOnly = true)
+	  @Transactional(transactionManager = "PlaylistTransactionManager")
 	  public Playlist findOrCreatePlaylist(PlaylistCreateDto dto) {
 		  Optional<Playlist> existingPlaylist = playlistRepository.findByNombre(dto.getNombre());
 		  Playlist playlist;
