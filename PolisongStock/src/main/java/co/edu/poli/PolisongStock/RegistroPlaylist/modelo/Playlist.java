@@ -8,6 +8,7 @@ import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,7 +36,7 @@ public class Playlist {
 	@Column(name="nombre")
 	private String nombre;
 	
-	 @ElementCollection  // Or a simple List if no complex associations needed
+	 @ElementCollection(fetch = FetchType.EAGER)  // Or a simple List if no complex associations needed
 	    @CollectionTable(name = "detalleCanciones", joinColumns = @JoinColumn(name = "detalleId"))
 	    @Column(name = "CancionId")
 	private List<Long> canciones;

@@ -15,6 +15,8 @@ import co.edu.poli.PolisongStock.RegistroCancion.repository.CancionRepository;
 import co.edu.poli.PolisongStock.RegistroPlaylist.dto.PlaylistCreateDto;
 import co.edu.poli.PolisongStock.RegistroPlaylist.modelo.Playlist;
 import co.edu.poli.PolisongStock.RegistroPlaylist.repository.PlaylistRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 
 @Service
@@ -24,6 +26,9 @@ public class PlaylistService {
 	
 	@Autowired
 	private CancionRepository cancionRepository;
+	
+    @PersistenceContext(unitName = "playlist")
+    private EntityManager entityManager;
 	
 	@Transactional(transactionManager = "PlaylistTransactionManager")
 	public Playlist createPlaylist(Playlist playlist) {
@@ -55,7 +60,7 @@ public class PlaylistService {
 	    }
 	    return p;
 	  }
-	  
+	  @Transactional(transactionManager = "PlaylistTransactionManager", readOnly = true)
 	  public Playlist findOrCreatePlaylist(PlaylistCreateDto dto) {
 		  Optional<Playlist> existingPlaylist = playlistRepository.findByNombre(dto.getNombre());
 		  Playlist playlist;
@@ -63,6 +68,7 @@ public class PlaylistService {
 		  if(existingPlaylist.isPresent()) {
 			  playlist = existingPlaylist.get();
 			  System.out.println("Playlist found" + playlist.getNombre());
+			  playlist.getCanciones().clear();
 		  }else {
 			  playlist = new Playlist();
 			  playlist.setNombre(dto.getNombre());
@@ -77,12 +83,14 @@ public class PlaylistService {
 					  playlist.getCanciones().add(cancionId);
 				  }
 			  }
+			  entityManager.flush();
 		  }
 		  
 		  Playlist saved = playlistRepository.save(playlist);
 		  System.out.println("Saved Playlist ID: " + saved.getIdPlaylist() + " with " + saved.getCanciones().size() + " songs");
 		  return saved;
 	  }
+	  @Transactional(transactionManager = "cancionTransactionManager", readOnly = true)
 	  private Long findOrCreateCancion (CancionCreateDto dto) {
 		  Optional <Cancion> existingCancion = cancionRepository.findByNombreAndArtista(dto.getNombre(), dto.getArtista());
 		  if(existingCancion.isPresent()) {

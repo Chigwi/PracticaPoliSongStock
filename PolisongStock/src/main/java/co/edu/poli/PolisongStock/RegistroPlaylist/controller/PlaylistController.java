@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.poli.PolisongStock.RegistroCancion.modelo.Cancion;
+import co.edu.poli.PolisongStock.RegistroPlaylist.dto.PlaylistCreateDto;
 import co.edu.poli.PolisongStock.RegistroPlaylist.modelo.Playlist;
 import co.edu.poli.PolisongStock.RegistroPlaylist.service.PlaylistService;
 
@@ -28,8 +29,8 @@ public class PlaylistController {
 	private PlaylistService playlistService;
 	
 	@PostMapping 
-	public ResponseEntity<Playlist> create(@RequestBody Playlist playlist){
-		Playlist saved = playlistService.createPlaylist(playlist);
+	public ResponseEntity<Playlist> create(@RequestBody PlaylistCreateDto playlist){
+		Playlist saved = playlistService.findOrCreatePlaylist(playlist);
 		return ResponseEntity.ok(saved);
 	}
 	
