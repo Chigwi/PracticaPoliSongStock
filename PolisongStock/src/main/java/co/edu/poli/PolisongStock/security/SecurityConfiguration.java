@@ -49,7 +49,7 @@ public class SecurityConfiguration {
 				.csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(authorize -> {
 					
-					authorize.anyRequest().authenticated();
+					authorize.anyRequest().permitAll();
 					
 					//authorize.requestMatchers(HttpMethod.GET, "/api/canciones").permitAll();
 					//authorize.requestMatchers(HttpMethod.GET, "/api/playlist").permitAll();
