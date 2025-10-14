@@ -4,7 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import co.edu.poli.PolisongStock.RegistroUsuario.modelo.Persona;
 import co.edu.poli.PolisongStock.RegistroUsuario.repository.UsuarioRepository;
@@ -16,13 +23,32 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
-	public Persona createUsuario(Persona persona) {
-		return usuarioRepository.save(persona); // This triggers JPA to insert into DB
+	private final PasswordEncoder encoder;
+	
+	public UsuarioService(PasswordEncoder encoder) {
+		this.encoder = encoder;
+	}
+	
+	
+	@PostMapping("/api/usuarios/crearusuario")
+	public ResponseEntity<String> createUsuario(@RequestBody Persona persona) {
+		
+		Optional<Persona> optionalPersona = usuarioRepository.findById(persona.getIdPersona());
+		if(!optionalPersona.isPresent()) {
+			usuarioRepository.save(persona);
+			return ResponseEntity.ok("Usuario creado exitosamente"); // This triggers JPA to insert into DB
+		}else {
+			return ResponseEntity.badRequest().body("Usuario ya existe en el sistema");
+		}
 	}
 
+	@PreAuthorize("hasRole('superusuario')")
+	@GetMapping("/api/usuarios")
 	public List getAllUsuario() {
 		return usuarioRepository.findAll();
 	}
+	@PreAuthorize("hasRole('superusuario')")
+	@DeleteMapping("/api/usuarios")
 	public boolean deleteUsuario(Long id) {
 	    if (usuarioRepository.existsById(id)) {
 	        usuarioRepository.deleteById(id);

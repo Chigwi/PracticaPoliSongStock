@@ -40,13 +40,11 @@ public class CancionController {
 		return ResponseEntity.ok(saved);
 	}
 	
-	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@GetMapping
 	public ResponseEntity<List<Cancion>> getAll(){
 		return ResponseEntity.ok(cancionService.getAllCancion());
 	}
 	
-	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@GetMapping("/cancion/{id}")
 	public ResponseEntity<Cancion> getById(@PathVariable Long id){
 		Optional<Cancion> cancion = cancionService.getCancionById(id);
@@ -54,7 +52,6 @@ public class CancionController {
                      .orElse(ResponseEntity.notFound().build());	
 	}
 	
-	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@GetMapping("/formato/{nombre}")
 	public ResponseEntity<List<Cancion>> getByFormato(@PathVariable String nombre){
 		return ResponseEntity.ok(cancionService.getByFormatoNombre(nombre));

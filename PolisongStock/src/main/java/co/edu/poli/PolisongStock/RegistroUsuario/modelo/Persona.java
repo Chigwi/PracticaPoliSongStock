@@ -48,7 +48,7 @@ public class Persona {
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "persona")
-	@Column(name="Telefonos")
+	@Column(name="telefonos")
 	private List<Telefono> telefonos;
 	
 	@OneToMany(cascade = CascadeType.ALL)

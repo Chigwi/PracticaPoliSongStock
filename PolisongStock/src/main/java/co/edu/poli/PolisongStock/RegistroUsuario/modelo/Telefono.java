@@ -24,6 +24,9 @@ public class Telefono {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idTelefono;
 	
+	@Column(name="numero")
+	private String numero;
+	
 	@Column(name="codigoNacion")
 	private String codigoNacion;
 	

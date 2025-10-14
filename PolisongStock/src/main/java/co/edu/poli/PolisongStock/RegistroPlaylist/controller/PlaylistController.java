@@ -42,13 +42,11 @@ public class PlaylistController {
 		return ResponseEntity.ok(playlistService.getAllPlaylist());
 	}
 	
-	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@GetMapping("/{id}")
 	public ResponseEntity<PlaylistWithSongsDto> getPlaylistWithSongsById(@PathVariable Long id){
 		PlaylistWithSongsDto dto = playlistService.getPlaylistWithSongsById(id);
 		return ResponseEntity.ok(dto);
 	}
-	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@PutMapping("/{id}")
 	public ResponseEntity<String> update( @PathVariable Long id, @RequestBody String updatePlaylist){
 		return ResponseEntity.ok("playlist actualizada");
