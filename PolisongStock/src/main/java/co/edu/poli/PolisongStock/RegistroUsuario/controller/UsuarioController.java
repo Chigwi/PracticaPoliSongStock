@@ -2,27 +2,51 @@ package co.edu.poli.PolisongStock.RegistroUsuario.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import co.edu.poli.PolisongStock.RegistroUsuario.modelo.Persona;
+import co.edu.poli.PolisongStock.RegistroUsuario.repository.UsuarioRepository;
 
 @RestController
 @RequestMapping("/api/usuarios")
 
 public class UsuarioController {
 
-	//TODO usuarioService
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 	
-	@PostMapping 
-	public ResponseEntity<String> create(){
-		return ResponseEntity.ok("Usuario creado");
+	private final PasswordEncoder encoder;
+	
+	public UsuarioController(PasswordEncoder encoder) {
+		this.encoder = encoder;
+	}
+	
+	@PostMapping ("/crearusuarios")
+	public ResponseEntity<String> create(@RequestBody Persona persona){
+		Optional<Persona> optionalPersona = usuarioRepository.findById(persona.getIdPersona());
+		if(!optionalPersona.isPresent()) {
+			persona.setContrasenna(encoder.encode(persona.getContrasenna()));
+			usuarioRepository.save(persona);
+			return ResponseEntity.ok("Usuario creado exitosamente"); // This triggers JPA to insert into DB
+		}else {
+			return ResponseEntity.badRequest().body("Usuario ya existe en el sistema");
+		}
 	
 	}
+
+	@PreAuthorize("hasRole('superusuario')")
 	@GetMapping
 	public ResponseEntity<List<String>> getAll(){
 		ArrayList p = new ArrayList<String>();
@@ -30,15 +54,18 @@ public class UsuarioController {
 		p.add(r);
 		return ResponseEntity.ok(p);
 	}
+	@PreAuthorize("hasRole('superusuario')")
 	@GetMapping("/{id}")
 	public ResponseEntity<String> getById(Long id){
 		return ResponseEntity.ok("usuario");
 		
 	}
+	@PreAuthorize("hasRole('superusuario')")
 	@PutMapping("/{id}")
 	public ResponseEntity<String> update(Long id, String updateUsuario){
 		return ResponseEntity.ok("usuario actualizado");
 	}
+	@PreAuthorize("hasRole('superusuario')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> delete (Long id){
 		return ResponseEntity.ok("usuario eliminado");
