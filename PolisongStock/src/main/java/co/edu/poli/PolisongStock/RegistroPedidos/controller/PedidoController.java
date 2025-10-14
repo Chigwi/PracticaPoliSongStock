@@ -54,7 +54,7 @@ public class PedidoController {
 	
 	//@PreAuthorize("hasRole('superusuario')")
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> delete (Long id){
+	public ResponseEntity<String> delete (@PathVariable Long id){
 		boolean deleted = pedidoService.deletePedido(id);
 		if (deleted) {
 			return ResponseEntity.noContent().build();
