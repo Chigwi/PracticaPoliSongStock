@@ -33,6 +33,7 @@ public class CancionController {
 	
 	@PostMapping 
 	public ResponseEntity<Cancion> create(@RequestBody Cancion cancion){
+		cancion.getFormato().setNombre(cancion.getFormato().getNombre().toLowerCase());
 		Cancion saved = cancionService.createCancion(cancion);
 		return ResponseEntity.ok(saved);
 	}

@@ -90,7 +90,7 @@ public class PlaylistService {
 		  System.out.println("Saved Playlist ID: " + saved.getIdPlaylist() + " with " + saved.getCanciones().size() + " songs");
 		  return saved;
 	  }
-	  @Transactional(transactionManager = "cancionTransactionManager", readOnly = true)
+	  @Transactional(transactionManager = "cancionTransactionManager")
 	  private Long findOrCreateCancion (CancionCreateDto dto) {
 		  Optional <Cancion> existingCancion = cancionRepository.findByNombreAndArtista(dto.getNombre(), dto.getArtista());
 		  if(existingCancion.isPresent()) {
@@ -105,7 +105,7 @@ public class PlaylistService {
 		  
 		  if(dto.getFormato()!= null) {
 			  Formato formato = new Formato();
-			  formato.setNombre(dto.getFormato().getNombre());
+			  formato.setNombre(dto.getFormato().getNombre().toLowerCase());
 			  formato.setCantidad(dto.getFormato().getCantidad());
 			  
 			  newCancion.setFormato(formato);
