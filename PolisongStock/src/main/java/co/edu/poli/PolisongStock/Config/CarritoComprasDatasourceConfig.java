@@ -53,8 +53,8 @@ public class CarritoComprasDatasourceConfig {
             @Qualifier("carritoComprasDataSource") DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean em = builder
                 .dataSource(dataSource)
-                .packages("co.edu.poli.PolisongStock.RegistroCancion.Modelo")
-                .persistenceUnit("cancion")
+                .packages("co.edu.poli.PolisongStock.CarritoCompras.modelo")
+                .persistenceUnit("carritoCompras")
                 .build();
         em.setJpaProperties(hibernateProperties());
         return em;
