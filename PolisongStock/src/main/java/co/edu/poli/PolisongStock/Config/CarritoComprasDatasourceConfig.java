@@ -13,7 +13,65 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-
+@Configuration
+@EnableJpaRepositories(
+    basePackages = "co.edu.poli.PolisongStock.CarritoCompras.repository",
+    entityManagerFactoryRef = "carritoComprasEntityManagerFactory",
+    transactionManagerRef = "carritoComprasTransactionManager"
+)
 public class CarritoComprasDatasourceConfig {
+	
+
+    @Bean(name = "carritoComprasDataSource")
+    public DataSource dataSource() {
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl("jdbc:postgresql://aws-1-us-east-1.pooler.supabase.com:6543/postgres/postgres?sslmode=require");
+        config.setUsername("postgres.ktagufqsspaohxlehxmm");
+        config.setPassword("Servidor123");
+        config.setDriverClassName("org.postgresql.Driver");
+        config.setMaximumPoolSize(10);
+        config.setMinimumIdle(5);
+        config.setConnectionTestQuery("SELECT 1");
+        config.setConnectionTimeout(30000);
+        config.setValidationTimeout(5000);
+
+        // Evitar prepared statements del lado servidor
+        config.addDataSourceProperty("prepareThreshold", "0");
+        config.addDataSourceProperty("preferQueryMode", "simple");
+
+        // Hibernate necesita autoCommit = false para gestionar transacciones
+        config.setAutoCommit(false);
+
+        DataSource ds = new HikariDataSource(config);
+        System.out.println("HARDCODED DataSource created with URL: " + config.getJdbcUrl());
+        return ds;
+    }
+
+    @Bean(name = "carritoComprasEntityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+            EntityManagerFactoryBuilder builder,
+            @Qualifier("carritoComprasDataSource") DataSource dataSource) {
+        LocalContainerEntityManagerFactoryBean em = builder
+                .dataSource(dataSource)
+                .packages("co.edu.poli.PolisongStock.RegistroCancion.Modelo")
+                .persistenceUnit("cancion")
+                .build();
+        em.setJpaProperties(hibernateProperties());
+        return em;
+    }
+
+    @Bean(name = "carritoComprasTransactionManager")
+    public PlatformTransactionManager cancionTransactionManager(
+            @Qualifier("carritoComprasEntityManagerFactory") LocalContainerEntityManagerFactoryBean emf) {
+        return new JpaTransactionManager(emf.getObject());
+    }
+
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.hbm2ddl.auto", "update");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        properties.setProperty("hibernate.show_sql", "true");
+        return properties;
+    }
 
 }

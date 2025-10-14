@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 public class CarritoCompras {
 	
+	private Long id;
+	
 	private Persona usuario;
 	
 	private Pedido pedido;
