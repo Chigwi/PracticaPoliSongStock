@@ -48,7 +48,7 @@ public class PedidoController {
 	}
 	
 	@PreAuthorize("hasRole('superusuario')")
-	@GetMapping("/{id}")
+	@GetMapping("/experiencia/{id}")
 	public ResponseEntity<PedidoDto>getExperiencia(@PathVariable Long id){
 		PedidoDto p = pedidoService.getExperienciaPedido(id);
 		return ResponseEntity.ok(p);
