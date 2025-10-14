@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,22 +36,25 @@ public class PlaylistController {
 		return ResponseEntity.ok(saved);
 	}
 	
+	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@GetMapping
 	public ResponseEntity<List<Playlist>> getAll(){
 		return ResponseEntity.ok(playlistService.getAllPlaylist());
 	}
 	
+	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@GetMapping("/{id}")
 	public ResponseEntity<PlaylistWithSongsDto> getPlaylistWithSongsById(@PathVariable Long id){
 		PlaylistWithSongsDto dto = playlistService.getPlaylistWithSongsById(id);
 		return ResponseEntity.ok(dto);
 	}
-	
+	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@PutMapping("/{id}")
 	public ResponseEntity<String> update( @PathVariable Long id, @RequestBody String updatePlaylist){
 		return ResponseEntity.ok("playlist actualizada");
 	}
 	
+	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> delete (@PathVariable Long id){
 		boolean deleted = playlistService.deletePlaylist(id);

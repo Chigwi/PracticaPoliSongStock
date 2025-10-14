@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ public class CancionController {
 	@Autowired
 	private NotificacionesService notificacionService;
 	
+	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@PostMapping 
 	public ResponseEntity<Cancion> create(@RequestBody Cancion cancion){
 		cancion.getFormato().setNombre(cancion.getFormato().getNombre().toLowerCase());
@@ -38,27 +40,33 @@ public class CancionController {
 		return ResponseEntity.ok(saved);
 	}
 	
+	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@GetMapping
 	public ResponseEntity<List<Cancion>> getAll(){
 		return ResponseEntity.ok(cancionService.getAllCancion());
 	}
 	
+	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@GetMapping("/cancion/{id}")
 	public ResponseEntity<Cancion> getById(@PathVariable Long id){
 		Optional<Cancion> cancion = cancionService.getCancionById(id);
         return cancion.map(ResponseEntity::ok)
                      .orElse(ResponseEntity.notFound().build());	
 	}
+	
+	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@GetMapping("/formato/{nombre}")
 	public ResponseEntity<List<Cancion>> getByFormato(@PathVariable String nombre){
 		return ResponseEntity.ok(cancionService.getByFormatoNombre(nombre));
 	}
 	
+	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@PutMapping("/{id}")
 	public ResponseEntity<String> update(Long id, String updateCancion){
 		return ResponseEntity.ok("cancion actualizada");
 	}
 	
+	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> delete ( @PathVariable Long id){
 		boolean deleted = cancionService.deleteCancion(id);
