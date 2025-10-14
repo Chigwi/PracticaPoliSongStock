@@ -51,6 +51,11 @@ public class CancionService {
         return canciones.stream().map(this::mapToDetailDto).collect(Collectors.toList());
     }
 	
+    @Transactional(readOnly = true, transactionManager = "cancionTransactionManager")
+    public List<Cancion> getCancionesByIdsRaw(List<Long> ids) {
+        return cancionRepository.findAllById(ids);  // Directly return entities
+    }
+	
 	//metodo que mapea canciones a detalles mediante dto
     private CancionDetailDto mapToDetailDto(Cancion cancion) {
         CancionDetailDto dto = new CancionDetailDto();
