@@ -13,6 +13,7 @@ public class CarritoComprasController {
 	public ResponseEntity<CarritoCompras> createPedido(){
 		CarritoCompras r = new CarritoCompras();
 		return ResponseEntity.ok(r);
+		//spp
 	}
 
 }
