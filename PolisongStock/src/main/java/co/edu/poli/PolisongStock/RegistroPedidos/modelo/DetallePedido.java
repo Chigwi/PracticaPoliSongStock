@@ -33,7 +33,7 @@ public class DetallePedido {
 
     @ElementCollection  // Or a simple List if no complex associations needed
     @CollectionTable(name = "detalleProductos", joinColumns = @JoinColumn(name = "detalleId"))
-    @Column(name = "CancionId")
+    @Column(name = "PlaylistId")
 	private List<Long> caniones;
 
 }
