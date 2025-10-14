@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.poli.PolisongStock.RegistroCancion.dto.CancionCreateDto;
+import co.edu.poli.PolisongStock.RegistroCancion.dto.CancionDetailDto;
 import co.edu.poli.PolisongStock.RegistroCancion.modelo.Cancion;
 import co.edu.poli.PolisongStock.RegistroCancion.modelo.Formato;
 import co.edu.poli.PolisongStock.RegistroCancion.repository.CancionRepository;
+import co.edu.poli.PolisongStock.RegistroCancion.service.CancionService;
 import co.edu.poli.PolisongStock.RegistroPlaylist.dto.PlaylistCreateDto;
+import co.edu.poli.PolisongStock.RegistroPlaylist.dto.PlaylistWithSongsDto;
 import co.edu.poli.PolisongStock.RegistroPlaylist.modelo.Playlist;
 import co.edu.poli.PolisongStock.RegistroPlaylist.repository.PlaylistRepository;
 import jakarta.persistence.EntityManager;
@@ -27,8 +30,12 @@ public class PlaylistService {
 	@Autowired
 	private CancionRepository cancionRepository;
 	
+	@Autowired
+	private CancionService cancionService;
+	
     @PersistenceContext(unitName = "playlist")
     private EntityManager entityManager;
+    
 	
 	@Transactional(transactionManager = "PlaylistTransactionManager")
 	public Playlist createPlaylist(Playlist playlist) {
@@ -115,5 +122,24 @@ public class PlaylistService {
 		  return savedCancion.getIdCancion();
 		  
 	  }
+	  
+	    @Transactional(readOnly = true, transactionManager = "PlaylistTransactionManager")  // Read-only for Playlist DB
+	    public PlaylistWithSongsDto getPlaylistWithSongsById(Long id) {
+	        Optional<Playlist> optionalPlaylist = playlistRepository.findById(id);
+	        if (optionalPlaylist.isPresent()) {
+	            Playlist playlist = optionalPlaylist.get();
+	            List<Long> cancionIds = playlist.getCanciones();  // Get IDs
+	            
+	            // Fetch Cancion details from Cancion DB (cross-DB call)
+	            List<CancionDetailDto> cancionDetails = cancionService.getCancionDetailsByIds(cancionIds);  // NEW: Call CancionService
+	            
+	            PlaylistWithSongsDto dto = new PlaylistWithSongsDto();
+	            dto.setId(playlist.getIdPlaylist());
+	            dto.setNombre(playlist.getNombre());
+	            dto.setCanciones(cancionDetails);  // Set enriched list
+	            return dto;
+	        }
+	        throw new RuntimeException("Playlist not found with ID: " + id);
+	    }
 
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.poli.PolisongStock.RegistroCancion.modelo.Cancion;
 import co.edu.poli.PolisongStock.RegistroPlaylist.dto.PlaylistCreateDto;
+import co.edu.poli.PolisongStock.RegistroPlaylist.dto.PlaylistWithSongsDto;
 import co.edu.poli.PolisongStock.RegistroPlaylist.modelo.Playlist;
 import co.edu.poli.PolisongStock.RegistroPlaylist.service.PlaylistService;
 
@@ -40,10 +41,9 @@ public class PlaylistController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Playlist> getById(@PathVariable Long id){
-		Optional<Playlist> playlist = playlistService.getPlaylistById(id);
-        return playlist.map(ResponseEntity::ok)
-                     .orElse(ResponseEntity.notFound().build());	
+	public ResponseEntity<PlaylistWithSongsDto> getPlaylistWithSongsById(@PathVariable Long id){
+		PlaylistWithSongsDto dto = playlistService.getPlaylistWithSongsById(id);
+		return ResponseEntity.ok(dto);
 	}
 	
 	@PutMapping("/{id}")
