@@ -5,7 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.poli.PolisongStock.RegistroPedidos.dto.PedidoDto;
 import co.edu.poli.PolisongStock.RegistroPedidos.modelo.Pedido;
 import co.edu.poli.PolisongStock.RegistroPedidos.repository.PedidoRepository;
 
@@ -31,6 +33,17 @@ public class PedidoService {
 
 	public Optional<Pedido> getPedidoById(Long id) {
 	    return pedidoRepository.findById(id);
+	}
+	
+	@Transactional(transactionManager = "pedidosTransactionManager", readOnly = true)
+	public PedidoDto getExperienciaPedido(Long id) {
+		Optional<Pedido> p = pedidoRepository.findById(id);
+		PedidoDto exp = new PedidoDto();
+		exp.setId(p.get().getIdPedido());
+		exp.setCalificacion(p.get().getExperiencia().getCalificacion());
+		exp.setDescripcion(p.get().getExperiencia().getDescripcion());
+		
+		return exp;
 	}
 
 }

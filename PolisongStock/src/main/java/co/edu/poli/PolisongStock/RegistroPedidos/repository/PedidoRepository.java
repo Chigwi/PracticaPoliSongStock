@@ -10,7 +10,6 @@ import co.edu.poli.PolisongStock.RegistroPedidos.modelo.Pedido;
 
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
-	@Query("SELECT p.idPedido, p.ExperienciaId.calificacion, p.Experiencia.descripcion FROM Pedido p WHERE p.idpedido = :id")
-	public List<Pedido> findByObtenerPedidosConExperiencia(Long id);
+
 
 }
