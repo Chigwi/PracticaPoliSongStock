@@ -27,7 +27,7 @@ public class CarritoCompras {
     @Column(name = "user_id")  // Assume user ID for ownership
     private Long userId;  // Link to user entity if exists
     
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemCarrito> items = new ArrayList<>();  // List of items in cart
 	
 }
