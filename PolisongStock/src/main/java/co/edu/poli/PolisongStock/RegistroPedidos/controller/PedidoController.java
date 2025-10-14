@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.poli.PolisongStock.RegistroPedidos.dto.PedidoDto;
 import co.edu.poli.PolisongStock.RegistroPedidos.modelo.Pedido;
 import co.edu.poli.PolisongStock.RegistroPedidos.service.PedidoService;
 
@@ -44,6 +45,13 @@ public class PedidoController {
 	public ResponseEntity<Optional<Pedido>> getById(@PathVariable Long id){
 		return ResponseEntity.ok(pedidoService.getPedidoById(id));
 		
+	}
+	
+	@PreAuthorize("hasRole('superusuario')")
+	@GetMapping("/{id}")
+	public ResponseEntity<PedidoDto>getExperiencia(@PathVariable Long id){
+		PedidoDto p = pedidoService.getExperienciaPedido(id);
+		return ResponseEntity.ok(p);
 	}
 	
 	@PreAuthorize("hasRole('superusuario')")
