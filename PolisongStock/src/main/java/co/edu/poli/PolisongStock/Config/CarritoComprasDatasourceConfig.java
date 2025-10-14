@@ -25,7 +25,7 @@ public class CarritoComprasDatasourceConfig {
     @Bean(name = "carritoComprasDataSource")
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:postgresql://aws-1-us-east-1.pooler.supabase.com:6543/postgres/postgres?sslmode=require");
+        config.setJdbcUrl("jdbc:postgresql://aws-1-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require");
         config.setUsername("postgres.ktagufqsspaohxlehxmm");
         config.setPassword("Servidor123");
         config.setDriverClassName("org.postgresql.Driver");
