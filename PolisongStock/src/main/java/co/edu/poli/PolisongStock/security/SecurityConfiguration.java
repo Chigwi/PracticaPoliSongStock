@@ -25,45 +25,33 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
-	@Bean
-	public UserDetailsService detallesUsuarioServicio (PasswordEncoder encoder) {
-		UserDetails admin = User
-				.withUsername("admin0")
-				.authorities("Basic", "Special")
-				.roles("superusuario")
-				.password(encoder.encode("1"))
-				.build();
-		return new InMemoryUserDetailsManager(admin);
-	}
-	
-	@Bean
-	public AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception{
-		return httpSecurity.getSharedObject(AuthenticationManagerBuilder.class).build();
-	}
-	
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-            .csrf(csrf -> csrf.disable())  // CSRF is disabled
-            .authorizeHttpRequests(authorize -> {
-                authorize.requestMatchers("/api/usuarios/crearusuarios").permitAll();  // Specific permit for this endpoint
-                //authorize.requestMatchers("/api/usuarios/**").authenticated();  // Example: Require auth for other usuario paths
-                
-                //Autorizar vista libre
-                
-                authorize.requestMatchers(HttpMethod.GET, "/api/canciones").permitAll();
-                authorize.requestMatchers(HttpMethod.GET, "/api/playlist").permitAll();
+    public UserDetailsService detallesUsuarioServicio(PasswordEncoder encoder) {
+        UserDetails admin = User
+            .withUsername("admin0")
+            .password(encoder.encode("1"))
+            .roles("superusuario")  // Esto crea la autoridad ROLE_superusuario
+            .build();
+        return new InMemoryUserDetailsManager(admin);
+    }
 
-                authorize.anyRequest().authenticated();  // General rule last
-            })
-            //.httpBasic(Customizer.withDefaults());
-            .addFilterBefore(new BasicAuthenticationFilter(authenticationManager(httpSecurity)), UsernamePasswordAuthenticationFilter.class);  // Or use formLogin if needed
-        
-        return httpSecurity.build();
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.GET, "/api/canciones/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/playlist/**").permitAll()
+                .requestMatchers("/api/usuarios/crearusuarios").permitAll()
+                .anyRequest().authenticated()
+            )
+            .httpBasic(Customizer.withDefaults());  // Habilita autenticación básica
+
+        return http.build();
     }
 }

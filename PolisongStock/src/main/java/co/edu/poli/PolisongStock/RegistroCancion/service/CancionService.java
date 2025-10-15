@@ -24,7 +24,7 @@ public class CancionService {
 		return cancionRepository.save(cancion); // This triggers JPA to insert into DB
 	}
 	@Transactional(transactionManager = "cancionTransactionManager", readOnly = true)
-	public List getAllCancion() {
+	public List<Cancion> getAllCancion() {
 		return cancionRepository.findAll();
 	}
 	public boolean deleteCancion(Long id) {
