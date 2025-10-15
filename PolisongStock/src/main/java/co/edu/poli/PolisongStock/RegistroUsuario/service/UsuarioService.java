@@ -6,6 +6,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +23,7 @@ import co.edu.poli.PolisongStock.RegistroUsuario.repository.UsuarioRepository;
 
 
 @Service
-public class UsuarioService {
+public class UsuarioService implements UserDetailsService{
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
@@ -37,6 +41,7 @@ public class UsuarioService {
 	public Boolean getOrCreate(Persona persona){
 		Optional<Persona> optionalPersona = usuarioRepository.findByNombreUsuario(persona.getNombreUsuario());
 		if(!optionalPersona.isPresent()) {
+			
 			persona.setContrasenna(encoder.encode(persona.getContrasenna()));
 			usuarioRepository.save(persona);
 			return true; // This triggers JPA to insert into DB
@@ -55,6 +60,17 @@ public class UsuarioService {
 
 	public Optional<Persona> getUsuarioById(Long id) {
 	    return usuarioRepository.findById(id);
+	}
+
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		
+		Persona persona = usuarioRepository.findByNombreUsuario(username).get();
+		return User.withUsername(persona.getNombreUsuario())
+				.roles("basicusuario")
+				.password(persona.getContrasenna())
+				.build();
 	}
 
 

@@ -30,18 +30,20 @@ public class PlaylistController {
 	@Autowired
 	private PlaylistService playlistService;
 	
+	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@PostMapping 
 	public ResponseEntity<Playlist> create(@RequestBody PlaylistCreateDto playlist){
 		Playlist saved = playlistService.findOrCreatePlaylist(playlist);
 		return ResponseEntity.ok(saved);
 	}
 	
-	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
+	@PreAuthorize("permitAll")
 	@GetMapping
 	public ResponseEntity<List<Playlist>> getAll(){
 		return ResponseEntity.ok(playlistService.getAllPlaylist());
 	}
 	
+	@PreAuthorize("permitAll")
 	@GetMapping("/{id}")
 	public ResponseEntity<PlaylistWithSongsDto> getPlaylistWithSongsById(@PathVariable Long id){
 		PlaylistWithSongsDto dto = playlistService.getPlaylistWithSongsById(id);

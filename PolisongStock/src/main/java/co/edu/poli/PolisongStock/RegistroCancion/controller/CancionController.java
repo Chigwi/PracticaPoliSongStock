@@ -40,18 +40,20 @@ public class CancionController {
 		return ResponseEntity.ok(saved);
 	}
 	
+	@PreAuthorize("permitAll")
 	@GetMapping
 	public ResponseEntity<List<Cancion>> getAll(){
 		return ResponseEntity.ok(cancionService.getAllCancion());
 	}
 	
+	@PreAuthorize("permitAll")
 	@GetMapping("/cancion/{id}")
 	public ResponseEntity<Cancion> getById(@PathVariable Long id){
 		Optional<Cancion> cancion = cancionService.getCancionById(id);
         return cancion.map(ResponseEntity::ok)
                      .orElse(ResponseEntity.notFound().build());	
 	}
-	
+	@PreAuthorize("permitAll")
 	@GetMapping("/formato/{nombre}")
 	public ResponseEntity<List<Cancion>> getByFormato(@PathVariable String nombre){
 		return ResponseEntity.ok(cancionService.getByFormatoNombre(nombre));
