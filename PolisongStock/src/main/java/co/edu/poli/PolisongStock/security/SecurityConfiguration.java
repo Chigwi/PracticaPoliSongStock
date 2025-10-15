@@ -49,7 +49,9 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+        
             .csrf(csrf -> csrf.disable())  // CSRF is disabled
+<<<<<<< HEAD
             .authorizeHttpRequests(authorize -> {
                 authorize.requestMatchers("/api/usuarios/crearusuarios").permitAll();  // Specific permit for this endpoint
                 //authorize.requestMatchers("/api/usuarios/**").authenticated();  // Example: Require auth for other usuario paths
@@ -62,7 +64,16 @@ public class SecurityConfiguration {
                 authorize.anyRequest().authenticated();  // General rule last
             })
             .addFilterBefore(new BasicAuthenticationFilter(authenticationManager(httpSecurity)), UsernamePasswordAuthenticationFilter.class);  // Or use formLogin if needed
+=======
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/api/canciones/formato/").permitAll()  // Specific permit for this endpoint
+                .requestMatchers("/api/usuarios/**").authenticated()  // Example: Require auth for other usuario paths
+                .anyRequest().permitAll()  // General rule last
+            )
+            .httpBasic(Customizer.withDefaults());  // Or use formLogin if needed
+>>>>>>> branch 'master' of https://github.com/Chigwi/PracticaPoliSongStock
         
         return httpSecurity.build();
+//tetas
     }
 }
