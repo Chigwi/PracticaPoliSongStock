@@ -74,6 +74,6 @@ public class SecurityConfiguration {
 >>>>>>> branch 'master' of https://github.com/Chigwi/PracticaPoliSongStock
         
         return httpSecurity.build();
-//tetas
+/
     }
 }
