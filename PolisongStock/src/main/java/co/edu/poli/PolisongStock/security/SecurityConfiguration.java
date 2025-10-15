@@ -48,7 +48,7 @@ public class SecurityConfiguration {
         httpSecurity
             .csrf(csrf -> csrf.disable())  // CSRF is disabled
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/usuarios/crearusuarios").permitAll()  // Specific permit for this endpoint
+                .requestMatchers("/api/canciones/formato/").permitAll()  // Specific permit for this endpoint
                 .requestMatchers("/api/usuarios/**").authenticated()  // Example: Require auth for other usuario paths
                 .anyRequest().permitAll()  // General rule last
             )
