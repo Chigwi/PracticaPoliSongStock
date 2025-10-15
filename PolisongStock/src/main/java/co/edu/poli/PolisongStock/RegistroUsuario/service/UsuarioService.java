@@ -28,27 +28,23 @@ public class UsuarioService {
 	public UsuarioService(PasswordEncoder encoder) {
 		this.encoder = encoder;
 	}
-	
-	
-	@PostMapping("/api/usuarios/crearusuario")
-	public ResponseEntity<String> createUsuario(@RequestBody Persona persona) {
-		
-		Optional<Persona> optionalPersona = usuarioRepository.findById(persona.getIdPersona());
-		if(!optionalPersona.isPresent()) {
-			usuarioRepository.save(persona);
-			return ResponseEntity.ok("Usuario creado exitosamente"); // This triggers JPA to insert into DB
-		}else {
-			return ResponseEntity.badRequest().body("Usuario ya existe en el sistema");
-		}
-	}
 
-	@PreAuthorize("hasRole('superusuario')")
-	@GetMapping("/api/usuarios")
+
 	public List getAllUsuario() {
 		return usuarioRepository.findAll();
 	}
-	@PreAuthorize("hasRole('superusuario')")
-	@DeleteMapping("/api/usuarios")
+	
+	public Boolean getOrCreate(Persona persona){
+		Optional<Persona> optionalPersona = usuarioRepository.findById(persona.getIdPersona());
+		if(!optionalPersona.isPresent()) {
+			persona.setContrasenna(encoder.encode(persona.getContrasenna()));
+			usuarioRepository.save(persona);
+			return true; // This triggers JPA to insert into DB
+		}else {
+			return false;
+		}
+	}
+	
 	public boolean deleteUsuario(Long id) {
 	    if (usuarioRepository.existsById(id)) {
 	        usuarioRepository.deleteById(id);
@@ -57,7 +53,7 @@ public class UsuarioService {
 	    return false;  // Returns false if ID not found
 	}
 
-	public Optional<Persona> getPlaylistById(Long id) {
+	public Optional<Persona> getUsuarioById(Long id) {
 	    return usuarioRepository.findById(id);
 	}
 

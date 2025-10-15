@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.poli.PolisongStock.RegistroUsuario.modelo.Persona;
 import co.edu.poli.PolisongStock.RegistroUsuario.repository.UsuarioRepository;
+import co.edu.poli.PolisongStock.RegistroUsuario.service.UsuarioService;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -25,20 +26,15 @@ import co.edu.poli.PolisongStock.RegistroUsuario.repository.UsuarioRepository;
 public class UsuarioController {
 
 	@Autowired
-	private UsuarioRepository usuarioRepository;
+	private UsuarioService usuarioService;
 	
-	private final PasswordEncoder encoder;
-	
-	public UsuarioController(PasswordEncoder encoder) {
-		this.encoder = encoder;
-	}
+		
+
 	
 	@PostMapping ("/crearusuarios")
 	public ResponseEntity<String> create(@RequestBody Persona persona){
-		Optional<Persona> optionalPersona = usuarioRepository.findById(persona.getIdPersona());
-		if(!optionalPersona.isPresent()) {
-			persona.setContrasenna(encoder.encode(persona.getContrasenna()));
-			usuarioRepository.save(persona);
+		boolean r = usuarioService.getOrCreate(persona);
+		if(r) {
 			return ResponseEntity.ok("Usuario creado exitosamente"); // This triggers JPA to insert into DB
 		}else {
 			return ResponseEntity.badRequest().body("Usuario ya existe en el sistema");
@@ -48,16 +44,14 @@ public class UsuarioController {
 
 	@PreAuthorize("hasRole('superusuario')")
 	@GetMapping
-	public ResponseEntity<List<String>> getAll(){
-		ArrayList p = new ArrayList<String>();
-		String r = "usuarios";
-		p.add(r);
-		return ResponseEntity.ok(p);
+	public ResponseEntity<List<Persona>> getAll(){
+		return ResponseEntity.ok(usuarioService.getAllUsuario());
 	}
+	
 	@PreAuthorize("hasRole('superusuario')")
 	@GetMapping("/{id}")
-	public ResponseEntity<String> getById(Long id){
-		return ResponseEntity.ok("usuario");
+	public ResponseEntity<Optional<Persona>> getById(Long id){
+		return ResponseEntity.ok(usuarioService.getUsuarioById(id));
 		
 	}
 	@PreAuthorize("hasRole('superusuario')")
@@ -68,6 +62,10 @@ public class UsuarioController {
 	@PreAuthorize("hasRole('superusuario')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> delete (Long id){
-		return ResponseEntity.ok("usuario eliminado");
+		if(usuarioService.deleteUsuario(id)) {
+			return ResponseEntity.ok("usuario eliminado");
+		}else {
+			return ResponseEntity.badRequest().body("el usuario no existe o no se puede encontrar");
+		}
 	}
 }
