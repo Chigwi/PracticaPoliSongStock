@@ -50,7 +50,7 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/api/usuarios/crearusuarios").permitAll()  // Specific permit for this endpoint
                 .requestMatchers("/api/usuarios/**").authenticated()  // Example: Require auth for other usuario paths
-                .anyRequest().authenticated()  // General rule last
+                .anyRequest().permitAll()  // General rule last
             )
             .httpBasic(Customizer.withDefaults());  // Or use formLogin if needed
         
