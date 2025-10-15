@@ -25,13 +25,13 @@ public class SecurityConfiguration {
 	public UserDetailsService detallesUsuarioServicio (PasswordEncoder encoder) {
 		UserDetails admin = User
 				.withUsername("admin0")
-				//.authorities("Basic", "Special")
+				.authorities("Basic", "Special")
 				.roles("superusuario")
 				.password(encoder.encode("1"))
 				.build();
 		UserDetails user = User
 				.withUsername("alphaUser0")
-				//.authorities("Basic")
+				.authorities("Basic")
 				.roles("basicusuario")
 				.password(encoder.encode("2"))
 				.build();
@@ -49,8 +49,8 @@ public class SecurityConfiguration {
 				.csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(authorize -> {
 					
-					authorize.anyRequest().permitAll();
-					//authorize.requestMatchers(HttpMethod.POST, "/api/usuarios/crearusuarios").permitAll();
+					//authorize.anyRequest().permitAll();
+					authorize.requestMatchers(HttpMethod.POST, "/api/usuarios/crearusuarios").permitAll();
 					//authorize.requestMatchers(HttpMethod.GET, "/api/canciones").permitAll();
 					//authorize.requestMatchers(HttpMethod.GET, "/api/playlist").permitAll();
 					//authorize.requestMatchers(HttpMethod.GET, "/api/pedidos").hasAuthority("Special");
