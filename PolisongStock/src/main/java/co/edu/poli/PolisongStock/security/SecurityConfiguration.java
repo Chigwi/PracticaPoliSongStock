@@ -46,6 +46,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+        
             .csrf(csrf -> csrf.disable())  // CSRF is disabled
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/api/canciones/formato/").permitAll()  // Specific permit for this endpoint
