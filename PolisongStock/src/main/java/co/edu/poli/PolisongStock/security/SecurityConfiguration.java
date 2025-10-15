@@ -61,6 +61,7 @@ public class SecurityConfiguration {
 
                 authorize.anyRequest().authenticated();  // General rule last
             })
+            //.httpBasic(Customizer.withDefaults());
             .addFilterBefore(new BasicAuthenticationFilter(authenticationManager(httpSecurity)), UsernamePasswordAuthenticationFilter.class);  // Or use formLogin if needed
         
         return httpSecurity.build();
