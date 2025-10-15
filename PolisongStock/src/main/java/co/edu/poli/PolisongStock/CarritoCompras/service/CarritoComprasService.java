@@ -32,7 +32,7 @@ public class CarritoComprasService {
     @Transactional(transactionManager = "CarritoComprasTransactionManager")
     public CarritoCompras addToCart(Long userId, Long itemId, String itemType, int quantity) {
         CarritoCompras cart = getOrCreateCart(userId);  // Uses findByUserId
-        Optional<ItemCarrito> existingItem = itemCarritoRepository.findByCartIdAndItemIdAndItemType(cart.getIdCart(), itemId, itemType);
+        Optional<ItemCarrito> existingItem = itemCarritoRepository.findByCartIdAndItemIdAndTipoItem(cart.getIdCart(), itemId, itemType);
         
         if (existingItem.isPresent()) {
             ItemCarrito item = existingItem.get();
@@ -80,7 +80,7 @@ public class CarritoComprasService {
 
     private Double calculatePlaylistPrice(Playlist playlist) {
         List<Long> songIds = playlist.getCanciones();
-        List<Cancion> canciones = cancionService.getCancionesByIdsRaw(songIds);  // Uses the new method
+        List<Cancion> canciones = cancionService.getCancionesByIdsRaw(songIds);
         return canciones.stream().mapToDouble(Cancion::getPrecio).sum();
     }
 }

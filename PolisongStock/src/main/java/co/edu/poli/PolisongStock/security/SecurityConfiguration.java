@@ -50,7 +50,7 @@ public class SecurityConfiguration {
 				.authorizeHttpRequests(authorize -> {
 					
 					authorize.anyRequest().permitAll();
-					authorize.requestMatchers(HttpMethod.POST, "/api/usuarios/crearusuarios").permitAll();
+					//authorize.requestMatchers(HttpMethod.POST, "/api/usuarios/crearusuarios").permitAll();
 					//authorize.requestMatchers(HttpMethod.GET, "/api/canciones").permitAll();
 					//authorize.requestMatchers(HttpMethod.GET, "/api/playlist").permitAll();
 					//authorize.requestMatchers(HttpMethod.GET, "/api/pedidos").hasAuthority("Special");

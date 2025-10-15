@@ -20,7 +20,7 @@ public class ItemCarrito {
 	private Long idItem;
     
     @ManyToOne
-    @JoinColumn(name = "idCarrito")
+    @JoinColumn(name = "idCart")
     private CarritoCompras carrito;
     
     @Column(name = "tipoItem")
