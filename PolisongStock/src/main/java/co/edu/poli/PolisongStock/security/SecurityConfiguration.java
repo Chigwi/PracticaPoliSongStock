@@ -43,19 +43,17 @@ public class SecurityConfiguration {
 		return new BCryptPasswordEncoder();
 	}
 	
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-		return httpSecurity
-				.csrf(AbstractHttpConfigurer::disable)
-				.authorizeHttpRequests(authorize -> {
-					
-					//authorize.anyRequest().permitAll();
-					authorize.requestMatchers(HttpMethod.POST, "/api/usuarios/crearusuarios").permitAll();
-					//authorize.requestMatchers(HttpMethod.GET, "/api/canciones").permitAll();
-					//authorize.requestMatchers(HttpMethod.GET, "/api/playlist").permitAll();
-					//authorize.requestMatchers(HttpMethod.GET, "/api/pedidos").hasAuthority("Special");
-				})
-				.httpBasic(Customizer.withDefaults())
-				.build();
-	}
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+            .csrf(csrf -> csrf.disable())  // CSRF is disabled
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/api/usuarios/crearusuarios").permitAll()  // Specific permit for this endpoint
+                .requestMatchers("/api/usuarios/**").authenticated()  // Example: Require auth for other usuario paths
+                .anyRequest().authenticated()  // General rule last
+            )
+            .httpBasic(Customizer.withDefaults());  // Or use formLogin if needed
+        
+        return httpSecurity.build();
+    }
 }
