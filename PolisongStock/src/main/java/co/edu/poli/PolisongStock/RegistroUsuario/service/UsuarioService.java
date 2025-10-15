@@ -35,7 +35,7 @@ public class UsuarioService {
 	}
 	
 	public Boolean getOrCreate(Persona persona){
-		Optional<Persona> optionalPersona = usuarioRepository.findById(persona.getIdPersona());
+		Optional<Persona> optionalPersona = usuarioRepository.findByNombreUsuario(persona.getNombreUsuario());
 		if(!optionalPersona.isPresent()) {
 			persona.setContrasenna(encoder.encode(persona.getContrasenna()));
 			usuarioRepository.save(persona);
