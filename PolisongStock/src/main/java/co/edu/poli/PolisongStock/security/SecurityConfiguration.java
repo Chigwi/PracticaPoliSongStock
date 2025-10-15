@@ -64,6 +64,5 @@ public class SecurityConfiguration {
             .addFilterBefore(new BasicAuthenticationFilter(authenticationManager(httpSecurity)), UsernamePasswordAuthenticationFilter.class);  // Or use formLogin if needed
         
         return httpSecurity.build();
-        //tetas
     }
 }
