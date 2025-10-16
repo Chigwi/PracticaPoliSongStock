@@ -35,5 +35,10 @@ public class Rol {
 	@JoinColumn(name = "rol")
 	@Column(name="persona")
 	private List <Persona> personas;
+	
+	public void addPersona(Persona persona) {
+	    personas.add(persona);
+	    persona.setRol(this);
+	}
 
 }

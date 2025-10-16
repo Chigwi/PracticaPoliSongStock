@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import co.edu.poli.PolisongStock.RegistroUsuario.modelo.Persona;
+import co.edu.poli.PolisongStock.RegistroUsuario.modelo.Rol;
+import co.edu.poli.PolisongStock.RegistroUsuario.repository.RolRepository;
 import co.edu.poli.PolisongStock.RegistroUsuario.repository.UsuarioRepository;
 
 
@@ -27,6 +29,8 @@ import co.edu.poli.PolisongStock.RegistroUsuario.repository.UsuarioRepository;
 public class UsuarioService implements UserDetailsService{
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	@Autowired
+	private RolRepository rolRepository;
 	
 	private final PasswordEncoder encoder;
 	
@@ -46,6 +50,9 @@ public class UsuarioService implements UserDetailsService{
 		if(!optionalPersona.isPresent()) {
 			
 			persona.setContrasenna(encoder.encode(persona.getContrasenna()));
+			
+			Optional<Rol> basic = rolRepository.findById((long)2);
+			basic.get().addPersona(persona);
 			usuarioRepository.save(persona);
 			
 			return true; // This triggers JPA to insert into DB
