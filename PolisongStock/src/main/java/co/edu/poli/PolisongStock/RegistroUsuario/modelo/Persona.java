@@ -57,7 +57,4 @@ public class Persona {
 	@Column(name="correos")
 	private List<Correo> correos;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "rol")
-	private Rol rol;
 }

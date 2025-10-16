@@ -69,7 +69,7 @@ public class UsuarioService implements UserDetailsService{
 		
 		Persona persona = usuarioRepository.findByNombreUsuario(username).get();
 		return User.withUsername(persona.getNombreUsuario())
-				.roles(persona.getRol().getNombre())
+				//.roles(persona.getRol().getNombre())
 				.password(persona.getContrasenna())
 				.build();
 	}
