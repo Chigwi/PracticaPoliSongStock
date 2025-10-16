@@ -10,6 +10,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,11 +27,11 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class SecurityConfiguration {
 
     @Bean
-    public UserDetailsService detallesUsuarioServicio(PasswordEncoder encoder) {
+    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
         UserDetails admin = User
             .withUsername("admin0")
             .password(encoder.encode("1"))
-            .roles("superusuario")  // Esto crea la autoridad ROLE_superusuario
+            .roles("superusuario") // genera ROLE_superusuario
             .build();
         return new InMemoryUserDetailsManager(admin);
     }
@@ -41,16 +42,18 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
+                // Endpoints públicos
                 .requestMatchers(HttpMethod.GET, "/api/canciones/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/playlist/**").permitAll()
                 .requestMatchers("/api/usuarios/crearusuarios").permitAll()
+                // Todo lo demás requiere autenticación
                 .anyRequest().authenticated()
             )
-            .httpBasic(Customizer.withDefaults());  // Habilita autenticación básica
+            .httpBasic(Customizer.withDefaults()); // activa autenticación básica
 
         return http.build();
     }
