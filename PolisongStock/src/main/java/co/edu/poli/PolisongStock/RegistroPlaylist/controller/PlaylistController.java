@@ -30,7 +30,7 @@ public class PlaylistController {
 	@Autowired
 	private PlaylistService playlistService;
 	
-	//@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
+	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@PostMapping 
 	public ResponseEntity<Playlist> create(@RequestBody PlaylistCreateDto playlist){
 		Playlist saved = playlistService.findOrCreatePlaylist(playlist);
@@ -52,7 +52,7 @@ public class PlaylistController {
 		return ResponseEntity.ok("playlist actualizada");
 	}
 	
-	//@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
+	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> delete (@PathVariable Long id){
 		boolean deleted = playlistService.deletePlaylist(id);

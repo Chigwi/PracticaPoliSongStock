@@ -42,24 +42,24 @@ public class UsuarioController {
 	
 	}
 
-	//@PreAuthorize("hasRole('superusuario')")
+	@PreAuthorize("hasRole('superusuario')")
 	@GetMapping
 	public ResponseEntity<List<Persona>> getAll(){
 		return ResponseEntity.ok(usuarioService.getAllUsuario());
 	}
 	
-	//@PreAuthorize("hasRole('superusuario')")
+	@PreAuthorize("hasRole('superusuario')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Optional<Persona>> getById(Long id){
 		return ResponseEntity.ok(usuarioService.getUsuarioById(id));
 		
 	}
-	//@PreAuthorize("hasRole('superusuario')")
+	@PreAuthorize("hasRole('superusuario')")
 	@PutMapping("/{id}")
 	public ResponseEntity<String> update(Long id, String updateUsuario){
 		return ResponseEntity.ok("usuario actualizado");
 	}
-	//@PreAuthorize("hasRole('superusuario')")
+	@PreAuthorize("hasRole('superusuario')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> delete (Long id){
 		if(usuarioService.deleteUsuario(id)) {

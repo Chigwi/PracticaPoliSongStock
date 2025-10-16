@@ -32,7 +32,7 @@ public class CancionController {
 	@Autowired
 	private NotificacionesService notificacionService;
 	
-	//@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
+	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@PostMapping 
 	public ResponseEntity<Cancion> create(@RequestBody Cancion cancion){
 		cancion.getFormato().setNombre(cancion.getFormato().getNombre().toLowerCase());
@@ -57,13 +57,13 @@ public class CancionController {
 		return ResponseEntity.ok(cancionService.getByFormatoNombre(nombre));
 	}
 	
-	//@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
+	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@PutMapping("/{id}")
 	public ResponseEntity<String> update(Long id, String updateCancion){
 		return ResponseEntity.ok("cancion actualizada");
 	}
 	
-	//@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
+	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> delete ( @PathVariable Long id){
 		boolean deleted = cancionService.deleteCancion(id);

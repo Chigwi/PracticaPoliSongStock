@@ -27,40 +27,40 @@ public class PedidoController {
 	@Autowired
 	private PedidoService pedidoService;
 	
-	//@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
+	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@PostMapping 
 	public ResponseEntity<Pedido> create(@RequestBody Pedido pedido){
 		Pedido saved = pedidoService.createPedido(pedido);
 		return ResponseEntity.ok(saved);
 	
 	}
-	//@PreAuthorize("hasRole('superusuario')")
+	@PreAuthorize("hasRole('superusuario')")
 	@GetMapping
 	public ResponseEntity<List<Pedido>> getAll(){
 		return ResponseEntity.ok(pedidoService.getAllPedidos());
 	}
 	
-	//@PreAuthorize("hasRole('superusuario')")
+	@PreAuthorize("hasRole('superusuario')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Optional<Pedido>> getById(@PathVariable Long id){
 		return ResponseEntity.ok(pedidoService.getPedidoById(id));
 		
 	}
 	
-	//@PreAuthorize("hasRole('superusuario')")
+	@PreAuthorize("hasRole('superusuario')")
 	@GetMapping("/experiencia/{id}")
 	public ResponseEntity<PedidoDto>getExperiencia(@PathVariable Long id){
 		PedidoDto p = pedidoService.getExperienciaPedido(id);
 		return ResponseEntity.ok(p);
 	}
 	
-	//@PreAuthorize("hasRole('superusuario')")
+	@PreAuthorize("hasRole('superusuario')")
 	@PutMapping("/{id}")
 	public ResponseEntity<String> update(Long id, String updatePedido){
 		return ResponseEntity.ok("pedido actualizado");
 	}
 	
-	//@PreAuthorize("hasRole('superusuario')")
+	@PreAuthorize("hasRole('superusuario')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> delete (@PathVariable Long id){
 		boolean deleted = pedidoService.deletePedido(id);

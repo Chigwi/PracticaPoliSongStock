@@ -26,8 +26,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    @Bean
-    @Primary
+    /*@Bean
     public UserDetailsService userDetailsService(PasswordEncoder encoder) {
         UserDetails admin = User
             .withUsername("admin0")
@@ -35,7 +34,7 @@ public class SecurityConfiguration {
             .roles("superusuario")
             .build();
         return new InMemoryUserDetailsManager(admin);
-    }
+    }*/
 
     @Bean
     public PasswordEncoder passwordEncoder() {
