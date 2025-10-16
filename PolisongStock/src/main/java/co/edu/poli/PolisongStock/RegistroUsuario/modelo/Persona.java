@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -56,5 +57,10 @@ public class Persona {
 	@JoinColumn(name = "persona")
 	@Column(name="correos")
 	private List<Correo> correos;
+	
+	@ManyToOne
+	@JoinColumn(name = "rolId") // or whatever your FK column is
+	private Rol rol;
+
 	
 }

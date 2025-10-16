@@ -40,11 +40,14 @@ public class UsuarioService implements UserDetailsService{
 	}
 	
 	public Boolean getOrCreate(Persona persona){
+		
 		Optional<Persona> optionalPersona = usuarioRepository.findByNombreUsuario(persona.getNombreUsuario());
+		
 		if(!optionalPersona.isPresent()) {
 			
 			persona.setContrasenna(encoder.encode(persona.getContrasenna()));
 			usuarioRepository.save(persona);
+			
 			return true; // This triggers JPA to insert into DB
 		}else {
 			return false;
