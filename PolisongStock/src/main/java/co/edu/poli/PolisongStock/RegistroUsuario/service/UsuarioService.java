@@ -22,7 +22,6 @@ import co.edu.poli.PolisongStock.RegistroUsuario.modelo.Persona;
 import co.edu.poli.PolisongStock.RegistroUsuario.repository.UsuarioRepository;
 
 
-
 @Service
 @Primary
 public class UsuarioService implements UserDetailsService{
@@ -70,7 +69,7 @@ public class UsuarioService implements UserDetailsService{
 		
 		Persona persona = usuarioRepository.findByNombreUsuario(username).get();
 		return User.withUsername(persona.getNombreUsuario())
-				.roles("basicusuario")
+				.roles(persona.getRol().getNombre())
 				.password(persona.getContrasenna())
 				.build();
 	}
