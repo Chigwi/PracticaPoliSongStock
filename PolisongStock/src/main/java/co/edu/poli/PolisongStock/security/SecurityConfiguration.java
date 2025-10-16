@@ -48,8 +48,8 @@ public class SecurityConfiguration {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/canciones/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/playlist/**").permitAll()
+                .requestMatchers("/api/canciones/**").permitAll()
+                .requestMatchers("/api/playlist/**").permitAll()
                 .requestMatchers("/api/usuarios/crearusuarios").permitAll()
                 .anyRequest().authenticated()
             )
