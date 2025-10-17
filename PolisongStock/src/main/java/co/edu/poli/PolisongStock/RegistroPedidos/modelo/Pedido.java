@@ -47,5 +47,8 @@ public class Pedido {
 	@Column(name="fecha")
 	private String fecha;
 	
+	@Column(name = "comprador")
+	private String comprador;
+	
 	
 }

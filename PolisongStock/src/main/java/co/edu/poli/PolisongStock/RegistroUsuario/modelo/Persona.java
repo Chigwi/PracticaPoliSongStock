@@ -74,4 +74,9 @@ public class Persona {
     @Column(name = "playlists")
 	private List<Long> playlists;
 	
+	@ElementCollection  // Or a simple List if no complex associations needed
+    @CollectionTable(name = "pedidosUsuario", joinColumns = @JoinColumn(name = "idpedidos"))
+    @Column(name = "pedidos")
+	private List<Long> pedidos;
+	
 }
