@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.poli.PolisongStock.RegistroCancion.modelo.Cancion;
 import co.edu.poli.PolisongStock.RegistroPedidos.dto.PedidoDto;
 import co.edu.poli.PolisongStock.RegistroPedidos.modelo.Pedido;
 import co.edu.poli.PolisongStock.RegistroPedidos.service.PedidoService;
@@ -52,6 +53,11 @@ public class PedidoController {
 	public ResponseEntity<PedidoDto>getExperiencia(@PathVariable Long id){
 		PedidoDto p = pedidoService.getExperienciaPedido(id);
 		return ResponseEntity.ok(p);
+	}
+	
+	@GetMapping("/proveedor/{nombre}")
+	public ResponseEntity<List<Optional<Pedido>>>getByComprador(@PathVariable String nombre){
+		return ResponseEntity.ok(pedidoService.getPedidosByComprador(nombre));
 	}
 	
 	@PreAuthorize("hasRole('superusuario')")

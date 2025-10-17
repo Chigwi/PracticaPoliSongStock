@@ -20,6 +20,7 @@ import co.edu.poli.PolisongStock.Notificaciones.modelo.Notificacion;
 import co.edu.poli.PolisongStock.Notificaciones.service.NotificacionesService;
 import co.edu.poli.PolisongStock.RegistroCancion.modelo.Cancion;
 import co.edu.poli.PolisongStock.RegistroCancion.service.CancionService;
+import co.edu.poli.PolisongStock.RegistroPlaylist.service.PlaylistService;
 
 @RestController
 @RequestMapping("/api/canciones")
@@ -50,6 +51,11 @@ public class CancionController {
 		Optional<Cancion> cancion = cancionService.getCancionById(id);
         return cancion.map(ResponseEntity::ok)
                      .orElse(ResponseEntity.notFound().build());	
+	}
+	
+	@GetMapping("/proveedor/{nombre}")
+	public ResponseEntity<List<Optional<Cancion>>>getByProveedor(@PathVariable String nombre){
+		return ResponseEntity.ok(cancionService.getCancionesByProveedor(nombre));
 	}
 
 	@GetMapping("/formato/{nombre}")

@@ -47,6 +47,11 @@ public class PlaylistController {
 		PlaylistWithSongsDto dto = playlistService.getPlaylistWithSongsById(id);
 		return ResponseEntity.ok(dto);
 	}
+	
+	@GetMapping("/proveedor/{nombre}")
+	public ResponseEntity<List<Optional<Playlist>>>getByProveedor(@PathVariable String nombre){
+		return ResponseEntity.ok(playlistService.getPlaylistsByProveedor(nombre));
+	}
 	@PutMapping("/{id}")
 	public ResponseEntity<String> update( @PathVariable Long id, @RequestBody String updatePlaylist){
 		return ResponseEntity.ok("playlist actualizada");

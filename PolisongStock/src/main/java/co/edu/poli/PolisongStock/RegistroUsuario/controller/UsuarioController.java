@@ -11,12 +11,19 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.poli.PolisongStock.RegistroCancion.modelo.Cancion;
+import co.edu.poli.PolisongStock.RegistroCancion.service.CancionService;
+import co.edu.poli.PolisongStock.RegistroPedidos.modelo.Pedido;
+import co.edu.poli.PolisongStock.RegistroPedidos.service.PedidoService;
+import co.edu.poli.PolisongStock.RegistroPlaylist.modelo.Playlist;
+import co.edu.poli.PolisongStock.RegistroPlaylist.service.PlaylistService;
 import co.edu.poli.PolisongStock.RegistroUsuario.modelo.Persona;
 import co.edu.poli.PolisongStock.RegistroUsuario.repository.UsuarioRepository;
 import co.edu.poli.PolisongStock.RegistroUsuario.service.UsuarioService;
@@ -28,6 +35,15 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private CancionService cancionService;
+	
+	@Autowired
+	private PlaylistService playlistService;
+	
+	@Autowired
+	private PedidoService pedidoService;
 	
 		
 
@@ -54,6 +70,19 @@ public class UsuarioController {
 		return ResponseEntity.ok(usuarioService.getUsuarioById(id));
 		
 	}
+	
+	@GetMapping("/misCanciones/{nombre}")
+	public ResponseEntity<List<Optional<Cancion>>> getMisCanciones(@PathVariable String nombre){
+		return ResponseEntity.ok(cancionService.getCancionesByProveedor(nombre));
+	}
+	@GetMapping("/misPlaylist/{nombre}")
+	public ResponseEntity<List<Optional<Playlist>>> getMisPlaylist(@PathVariable String nombre){
+		return ResponseEntity.ok(playlistService.getPlaylistsByProveedor(nombre));
+	}
+	@GetMapping("/misCanciones/{nombre}")
+	public ResponseEntity<List<Optional<Pedido>>> getMisPedidos(@PathVariable String nombre){
+		return ResponseEntity.ok(pedidoService.getPedidosByComprador(nombre));
+	}
 	@PreAuthorize("hasRole('superusuario')")
 	@PutMapping("/{id}")
 	public ResponseEntity<String> update(Long id, String updateUsuario){
@@ -68,4 +97,5 @@ public class UsuarioController {
 			return ResponseEntity.badRequest().body("el usuario no existe o no se puede encontrar");
 		}
 	}
+	
 }
