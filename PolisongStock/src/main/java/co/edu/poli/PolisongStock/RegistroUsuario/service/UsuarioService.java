@@ -44,21 +44,22 @@ public class UsuarioService implements UserDetailsService{
 	}
 	
 	public Boolean getOrCreate(Persona persona){
-		
-		Optional<Persona> optionalPersona = usuarioRepository.findByNombreUsuario(persona.getNombreUsuario());
-		
-		if(!optionalPersona.isPresent()) {
-			
-			persona.setContrasenna(encoder.encode(persona.getContrasenna()));
-			
-			Optional<Rol> basic = rolRepository.findById((long)2);
-			basic.get().addPersona(persona);
-			usuarioRepository.save(persona);
-			
-			return true; // This triggers JPA to insert into DB
-		}else {
-			return false;
-		}
+	    Optional<Persona> optionalPersona = usuarioRepository.findByNombreUsuario(persona.getNombreUsuario());
+
+	    if(!optionalPersona.isPresent()) {
+	        persona.setContrasenna(encoder.encode(persona.getContrasenna()));
+
+	        Optional<Rol> basic = rolRepository.findById((long)2);
+	        if (basic.isPresent()) {
+	            persona.setRol(basic.get()); // ← ¡Esto es lo que faltaba!
+	            usuarioRepository.save(persona);
+	            return true;
+	        } else {
+	            throw new RuntimeException("Rol básico no encontrado");
+	        }
+	    } else {
+	        return false;
+	    }
 	}
 	
 	public boolean deleteUsuario(Long id) {
@@ -79,7 +80,7 @@ public class UsuarioService implements UserDetailsService{
 		
 		Persona persona = usuarioRepository.findByNombreUsuario(username).get();
 		return User.withUsername(persona.getNombreUsuario())
-				//.roles(persona.getRol().getNombre())
+				.roles(persona.getRol().getNombre())
 				.password(persona.getContrasenna())
 				.build();
 	}

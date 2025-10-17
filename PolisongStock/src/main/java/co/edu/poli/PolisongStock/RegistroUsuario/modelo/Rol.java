@@ -16,29 +16,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-
-@Table(name="Rol")
-
+@Table(name = "Rol")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Rol {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idRol;
-	
-	@Column(name="nombre")
-	private String nombre;
-	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "rol")
-	@Column(name="persona")
-	private List <Persona> personas;
-	
-	public void addPersona(Persona persona) {
-	    personas.add(persona);
-	    persona.setRol(this);
-	}
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idRol;
+
+    @Column(name = "nombre")
+    private String nombre;
+
+    @OneToMany(mappedBy = "rol", cascade = CascadeType.ALL)
+    private List<Persona> personas;
+
+    public void addPersona(Persona persona) {
+        personas.add(persona);
+        persona.setRol(this);
+    }
 }

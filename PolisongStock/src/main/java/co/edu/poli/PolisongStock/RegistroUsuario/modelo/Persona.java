@@ -59,7 +59,7 @@ public class Persona {
 	private List<Correo> correos;
 	
 	@ManyToOne
-	@JoinColumn(name = "rolId") // or whatever your FK column is
+	@JoinColumn(name = "rol") // or whatever your FK column is
 	private Rol rol;
 
 	
