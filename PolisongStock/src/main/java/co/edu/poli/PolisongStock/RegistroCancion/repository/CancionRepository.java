@@ -17,6 +17,8 @@ public interface CancionRepository extends JpaRepository<Cancion, Long>{
 	public List<Cancion> findAllByFormatoNombre (String nombre);
 	
 	@Query("SELECT c FROM Cancion c WHERE c.nombre = :nombre AND c.artista = :artista")
-	Optional <Cancion> findByNombreAndArtista(@Param("nombre")String nombre, @Param("artista")String artista);
+	public Optional <Cancion> findByNombreAndArtista(@Param("nombre")String nombre, @Param("artista")String artista);
 	
+	@Query("SELECT c FROM Cancion c WHERE c.proveedor = :proveedor")
+	public List<Optional <Cancion>> findByProveedor(@Param ("proveedor") String proveedor);
 }
