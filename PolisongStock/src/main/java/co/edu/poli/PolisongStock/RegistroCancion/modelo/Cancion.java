@@ -42,4 +42,8 @@ public class Cancion {
 	@JoinColumn(name = "formato")
 	private Formato formato;
 	
+	@Column(name = "Proveedor")
+	private String proveedor;
+	
+	
 }

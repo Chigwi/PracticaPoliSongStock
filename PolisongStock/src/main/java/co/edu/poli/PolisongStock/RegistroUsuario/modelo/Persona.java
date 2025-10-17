@@ -3,7 +3,9 @@ package co.edu.poli.PolisongStock.RegistroUsuario.modelo;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -59,8 +61,17 @@ public class Persona {
 	private List<Correo> correos;
 	
 	@ManyToOne
-	@JoinColumn(name = "rol") // or whatever your FK column is
+	@JoinColumn(name = "rol")
 	private Rol rol;
 
+	@ElementCollection  // Or a simple List if no complex associations needed
+    @CollectionTable(name = "cancionesUsuario", joinColumns = @JoinColumn(name = "idCancion"))
+    @Column(name = "canciones")
+	private List<Long> canciones;
+	
+	@ElementCollection  // Or a simple List if no complex associations needed
+    @CollectionTable(name = "playlistsUsuario", joinColumns = @JoinColumn(name = "idPlaylist"))
+    @Column(name = "playlists")
+	private List<Long> playlists;
 	
 }

@@ -40,5 +40,8 @@ public class Playlist {
 	    @CollectionTable(name = "detalleCanciones", joinColumns = @JoinColumn(name = "detalleId"))
 	    @Column(name = "CancionId")
 	private List<Long> canciones;
+	 
+	@Column(name="proveedor")
+	private String proveedor;
 	
 }
