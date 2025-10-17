@@ -65,6 +65,11 @@ public class CancionService {
         dto.setFormato(cancion.getFormato());
         return dto;
     }
+    
+    @Transactional(readOnly = true, transactionManager = "cancionTransactionManager")
+    public List<Optional<Cancion>> getCancionesByProveedor(String nombre){
+    	return cancionRepository.findByProveedor(nombre);
+    }
 	
 
 }

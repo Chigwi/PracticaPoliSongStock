@@ -45,5 +45,9 @@ public class PedidoService {
 		
 		return exp;
 	}
-
+	
+	@Transactional(readOnly = true, transactionManager = "pedidosTransactionManager" )
+	public List<Optional<Pedido>> getPedidosByComprador(String nombre){
+		return pedidoRepository.findByComprador(nombre);
+	}
 }

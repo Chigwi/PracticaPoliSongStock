@@ -141,5 +141,10 @@ public class PlaylistService {
 	        }
 	        throw new RuntimeException("Playlist not found with ID: " + id);
 	    }
+	    
+	    @Transactional(readOnly = true,transactionManager = "PlaylistTransactionManager")
+	    public List<Optional<Playlist>>getPlaylistsByProveedor(String nombre){
+	    	return playlistRepository.findByProveedor(nombre);
+	    }
 
 }
