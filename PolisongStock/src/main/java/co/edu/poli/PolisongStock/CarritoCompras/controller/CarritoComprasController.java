@@ -21,9 +21,8 @@ public class CarritoComprasController {
     private CarritoComprasService shoppingCartService;
 
     @PostMapping("/cart")
-    public ResponseEntity<CarritoCompras> createPedido(){
-    	CarritoCompras r = new CarritoCompras();
-    	return ResponseEntity.ok(r);
+    public ResponseEntity<CarritoCompras> createPedido(@AuthenticationPrincipal AppUserDetails currentUser){
+    	return ResponseEntity.ok(shoppingCartService.createCart(currentUser.getId()));
     }
 
     @GetMapping("/cart")

@@ -75,6 +75,12 @@ public class CarritoComprasService {
         	return cart;
         }
     }
+    
+    public CarritoCompras createCart(Long userId) {
+    	CarritoCompras newCart = new CarritoCompras();
+        newCart.setUserId(userId);
+        return carritoComprasRepository.save(newCart);
+    }
 
     private CarritoCompras getOrCreateCart(Long userId) {
         return carritoComprasRepository.findByUserId(userId).orElseGet(() -> {
@@ -83,7 +89,8 @@ public class CarritoComprasService {
             return carritoComprasRepository.save(newCart);
         });
     }
-
+    
+   
     private Double calculatePlaylistPrice(Playlist playlist) {
         List<Long> songIds = playlist.getCanciones();
         List<Cancion> canciones = cancionService.getCancionesByIdsRaw(songIds);
