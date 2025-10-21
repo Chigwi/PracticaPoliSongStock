@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class CarritoComprasService {
@@ -63,11 +64,16 @@ public class CarritoComprasService {
 
     @Transactional(transactionManager = "CarritoComprasTransactionManager")
     public CarritoCompras checkoutCart(Long userId) {
+    	
         CarritoCompras cart = carritoComprasRepository.findByUserId(userId).orElseThrow();
-        // Process checkout logic...
-        cart.getItems().clear();
-        carritoComprasRepository.save(cart);
-        return cart;
+        if(pagoRealizado()) {
+        	cart.getItems().clear();
+	        carritoComprasRepository.save(cart);
+	        return cart;
+        }
+        else {
+        	return cart;
+        }
     }
 
     private CarritoCompras getOrCreateCart(Long userId) {
@@ -83,4 +89,14 @@ public class CarritoComprasService {
         List<Cancion> canciones = cancionService.getCancionesByIdsRaw(songIds);
         return canciones.stream().mapToDouble(Cancion::getPrecio).sum();
     }
+    
+    private boolean pagoRealizado() {
+    	Random pago = new Random();
+    	if(pago.nextInt(100)%2 == 0) {
+        	return true;
+    	}else {
+    		return false;
+    	}
+    }
+    
 }

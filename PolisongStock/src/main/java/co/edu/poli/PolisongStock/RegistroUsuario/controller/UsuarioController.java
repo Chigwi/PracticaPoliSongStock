@@ -79,7 +79,7 @@ public class UsuarioController {
 	public ResponseEntity<List<Optional<Playlist>>> getMisPlaylist(@PathVariable String nombre){
 		return ResponseEntity.ok(playlistService.getPlaylistsByProveedor(nombre));
 	}
-	@GetMapping("/misCanciones/{nombre}")
+	@GetMapping("/misPedidos/{nombre}")
 	public ResponseEntity<List<Optional<Pedido>>> getMisPedidos(@PathVariable String nombre){
 		return ResponseEntity.ok(pedidoService.getPedidosByComprador(nombre));
 	}
