@@ -21,4 +21,8 @@ public interface CancionRepository extends JpaRepository<Cancion, Long>{
 	
 	@Query("SELECT c FROM Cancion c WHERE c.proveedor = :proveedor")
 	public List<Optional <Cancion>> findByProveedor(@Param ("proveedor") String proveedor);
+	
+	@Query("SELECT c FROM Cancion c WHERE c.nombre = :nombre")
+	public List<Optional<Cancion>> findByNombre(@Param("nombre")String nombre);
+	
 }

@@ -2,6 +2,8 @@ package co.edu.poli.PolisongStock.RegistroUsuario.modelo;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -58,6 +60,7 @@ public class Persona {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "persona")
 	@Column(name="correos")
+	@JsonManagedReference
 	private List<Correo> correos;
 	
 	@ManyToOne

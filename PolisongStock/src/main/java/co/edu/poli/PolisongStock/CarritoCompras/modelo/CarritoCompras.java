@@ -3,6 +3,8 @@ package co.edu.poli.PolisongStock.CarritoCompras.modelo;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import co.edu.poli.PolisongStock.RegistroPedidos.modelo.Pedido;
 import co.edu.poli.PolisongStock.RegistroUsuario.modelo.Persona;
 import jakarta.persistence.CascadeType;
@@ -28,6 +30,7 @@ public class CarritoCompras {
     private Long userId;  // Link to user entity if exists
     
     @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ItemCarrito> items = new ArrayList<>();  // List of items in cart
 	
 }

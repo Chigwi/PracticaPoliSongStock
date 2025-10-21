@@ -4,8 +4,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +18,7 @@ import co.edu.poli.PolisongStock.security.AppUserDetails;
 
 @RestController
 @RequestMapping("/api/carritoCompras")
+@PreAuthorize("isAuthenticated()")
 public class CarritoComprasController {
     @Autowired
     private CarritoComprasService shoppingCartService;
@@ -23,6 +26,13 @@ public class CarritoComprasController {
     @PostMapping("/cart")
     public ResponseEntity<CarritoCompras> createPedido(@AuthenticationPrincipal AppUserDetails currentUser){
     	return ResponseEntity.ok(shoppingCartService.createCart(currentUser.getId()));
+    }
+    
+    @PostMapping("/add2cart/{tipo}/{id}/{cantidad}")
+    public ResponseEntity<CarritoCompras> add2cart(@AuthenticationPrincipal AppUserDetails currentUser,@PathVariable String tipo ,@PathVariable Long id,@PathVariable int cantidad){
+    	Long userID = currentUser.getId();
+    	CarritoCompras r = shoppingCartService.addToCart(userID, id, tipo, cantidad);
+    	return ResponseEntity.ok(r);
     }
 
     @GetMapping("/cart")
