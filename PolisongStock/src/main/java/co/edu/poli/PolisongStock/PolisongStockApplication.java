@@ -7,9 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PolisongStockApplication {
 
 	public static void main(String[] args) {
-		System.out.println("sapopinga");
+		System.out.println("Inicio del servidor");
 		SpringApplication.run(PolisongStockApplication.class, args);
-		System.out.println("sapopinga");
+		System.out.println("Servidor corre con exito!");
 	}
 
 }

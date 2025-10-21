@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import co.edu.poli.PolisongStock.CarritoCompras.service.CarritoComprasService;
 import co.edu.poli.PolisongStock.RegistroUsuario.modelo.Persona;
 import co.edu.poli.PolisongStock.RegistroUsuario.modelo.Rol;
 import co.edu.poli.PolisongStock.RegistroUsuario.repository.RolRepository;
@@ -28,6 +29,9 @@ public class UsuarioService implements UserDetailsService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private RolRepository rolRepository;
+    
+    @Autowired
+    private CarritoComprasService carritoComprasService;
 
     private final PasswordEncoder encoder;
 
@@ -48,7 +52,8 @@ public class UsuarioService implements UserDetailsService {
             Optional<Rol> basic = rolRepository.findById(2L);
             if (basic.isPresent()) {
                 persona.setRol(basic.get());
-                usuarioRepository.save(persona);
+                Persona p = usuarioRepository.save(persona);
+                carritoComprasService.createCart(p.getIdPersona());
                 return true;
             } else {
                 throw new RuntimeException("Rol básico no encontrado");

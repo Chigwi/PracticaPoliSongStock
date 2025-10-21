@@ -1,5 +1,7 @@
 package co.edu.poli.PolisongStock.RegistroPedidos.modelo;
 
+import java.util.List;
+
 import org.hibernate.annotations.ValueGenerationType;
 
 import jakarta.persistence.CascadeType;
@@ -49,6 +51,18 @@ public class Pedido {
 	
 	@Column(name = "comprador")
 	private String comprador;
+	
+	public String factura(Double precio) {
+		StringBuilder r = new StringBuilder();
+		r.append("Factura pedido" + idPedido + "\n");
+		r.append("Productos: " + detallePedido.getCaniones() + "\n");
+		r.append("Fecha de compra: " + fecha + "\n");
+		r.append("Comprador: " + comprador +"\n");
+		r.append("Total de compra: " + precio + "poliDolares" +"\n");
+		r.append("Gracias por su compra!");
+		
+		return r.toString();
+	}
 	
 	
 }
