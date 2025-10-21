@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,7 @@ import co.edu.poli.PolisongStock.RegistroPlaylist.service.PlaylistService;
 import co.edu.poli.PolisongStock.RegistroUsuario.modelo.Persona;
 import co.edu.poli.PolisongStock.RegistroUsuario.repository.UsuarioRepository;
 import co.edu.poli.PolisongStock.RegistroUsuario.service.UsuarioService;
+import co.edu.poli.PolisongStock.security.AppUserDetails;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -71,18 +73,27 @@ public class UsuarioController {
 		
 	}
 	
-	@GetMapping("/misCanciones/{nombre}")
-	public ResponseEntity<List<Optional<Cancion>>> getMisCanciones(@PathVariable String nombre){
-		return ResponseEntity.ok(cancionService.getCancionesByProveedor(nombre));
-	}
-	@GetMapping("/misPlaylist/{nombre}")
-	public ResponseEntity<List<Optional<Playlist>>> getMisPlaylist(@PathVariable String nombre){
-		return ResponseEntity.ok(playlistService.getPlaylistsByProveedor(nombre));
-	}
-	@GetMapping("/misPedidos/{nombre}")
-	public ResponseEntity<List<Optional<Pedido>>> getMisPedidos(@PathVariable String nombre){
-		return ResponseEntity.ok(pedidoService.getPedidosByComprador(nombre));
-	}
+	// Authenticated user sees their own songs (provider = username)
+    @GetMapping("/misCanciones")
+    public ResponseEntity<List<Optional<Cancion>>> getMisCanciones(@AuthenticationPrincipal AppUserDetails currentUser) {
+        String nombreProveedor = currentUser.getUsername();
+        return ResponseEntity.ok(cancionService.getCancionesByProveedor(nombreProveedor));
+    }
+
+    // Authenticated user sees their own playlists (provider = username)
+    @GetMapping("/misPlaylist")
+    public ResponseEntity<List<Optional<Playlist>>> getMisPlaylist(@AuthenticationPrincipal AppUserDetails currentUser) {
+        String nombreProveedor = currentUser.getUsername();
+        return ResponseEntity.ok(playlistService.getPlaylistsByProveedor(nombreProveedor));
+    }
+
+    // Authenticated user sees their own orders (buyer = username)
+    @GetMapping("/misPedidos")
+    public ResponseEntity<List<Optional<Pedido>>> getMisPedidos(@AuthenticationPrincipal AppUserDetails currentUser) {
+        String nombreComprador = currentUser.getUsername();
+        return ResponseEntity.ok(pedidoService.getPedidosByComprador(nombreComprador));
+    }
+
 	@PreAuthorize("hasRole('superusuario')")
 	@PutMapping("/{id}")
 	public ResponseEntity<String> update(Long id, String updateUsuario){

@@ -17,7 +17,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableJpaRepositories(
     basePackages = "co.edu.poli.PolisongStock.CarritoCompras.repository",
     entityManagerFactoryRef = "carritoComprasEntityManagerFactory",
-    transactionManagerRef = "carritoComprasTransactionManager"
+    transactionManagerRef = "CarritoComprasTransactionManager"
 )
 public class CarritoComprasDatasourceConfig {
 	
@@ -60,7 +60,7 @@ public class CarritoComprasDatasourceConfig {
         return em;
     }
 
-    @Bean(name = "carritoComprasTransactionManager")
+    @Bean(name = "CarritoComprasTransactionManager")
     public PlatformTransactionManager cancionTransactionManager(
             @Qualifier("carritoComprasEntityManagerFactory") LocalContainerEntityManagerFactoryBean emf) {
         return new JpaTransactionManager(emf.getObject());
