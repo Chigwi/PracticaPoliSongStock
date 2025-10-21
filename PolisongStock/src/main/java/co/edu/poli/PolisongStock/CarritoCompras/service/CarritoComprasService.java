@@ -46,7 +46,7 @@ public class CarritoComprasService {
             newItem.setTipoItem(itemType);
             newItem.setCantidad(quantity);
             if ("SONG".equals(itemType)) {
-                Optional<Cancion> cancion = cancionService.getCancionById(itemId);  // Assuming you have this
+                Optional<Cancion> cancion = cancionService.getCancionById(itemId);
                 newItem.setPrecio(cancion.map(Cancion::getPrecio).orElse(0.0));
             } else if ("PLAYLIST".equals(itemType)) {
                 Optional<Playlist> playlist = playlistService.getPlaylistById(itemId);
@@ -59,7 +59,9 @@ public class CarritoComprasService {
 
     @Transactional(readOnly = true, transactionManager = "CarritoComprasTransactionManager")
     public Optional<CarritoCompras> getCartByUserId(Long userId) {
-        return carritoComprasRepository.findByUserId(userId);  // Uses the new method
+    	Optional<CarritoCompras> r =carritoComprasRepository.findByUserId(userId); 
+    	r.get().getItems().size();
+        return r;
     }
 
     @Transactional(transactionManager = "CarritoComprasTransactionManager")
