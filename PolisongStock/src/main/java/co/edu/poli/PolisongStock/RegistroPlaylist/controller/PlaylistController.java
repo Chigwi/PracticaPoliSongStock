@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import co.edu.poli.PolisongStock.RegistroPlaylist.dto.PlaylistCreateDto;
 import co.edu.poli.PolisongStock.RegistroPlaylist.dto.PlaylistWithSongsDto;
 import co.edu.poli.PolisongStock.RegistroPlaylist.modelo.Playlist;
 import co.edu.poli.PolisongStock.RegistroPlaylist.service.PlaylistService;
+import co.edu.poli.PolisongStock.security.AppUserDetails;
 
 @RestController
 @RequestMapping("/api/playlist")
@@ -32,8 +34,10 @@ public class PlaylistController {
 	
 	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@PostMapping 
-	public ResponseEntity<Playlist> create(@RequestBody PlaylistCreateDto playlist){
+	public ResponseEntity<Playlist> create(@RequestBody PlaylistCreateDto playlist,@AuthenticationPrincipal AppUserDetails currentUser){
+		String nombreProveedor = currentUser.getUsername();
 		Playlist saved = playlistService.findOrCreatePlaylist(playlist);
+		saved.setProveedor(nombreProveedor);
 		return ResponseEntity.ok(saved);
 	}
 	

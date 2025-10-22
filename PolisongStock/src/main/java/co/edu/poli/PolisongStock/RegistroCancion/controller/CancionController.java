@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import co.edu.poli.PolisongStock.Notificaciones.service.NotificacionesService;
 import co.edu.poli.PolisongStock.RegistroCancion.modelo.Cancion;
 import co.edu.poli.PolisongStock.RegistroCancion.service.CancionService;
 import co.edu.poli.PolisongStock.RegistroPlaylist.service.PlaylistService;
+import co.edu.poli.PolisongStock.security.AppUserDetails;
 
 @RestController
 @RequestMapping("/api/canciones")
@@ -35,8 +37,10 @@ public class CancionController {
 	
 	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@PostMapping 
-	public ResponseEntity<Cancion> create(@RequestBody Cancion cancion){
+	public ResponseEntity<Cancion> create(@RequestBody Cancion cancion,@AuthenticationPrincipal AppUserDetails currentUser){
 		cancion.getFormato().setNombre(cancion.getFormato().getNombre().toLowerCase());
+		String nombreProveedor = currentUser.getUsername();
+		cancion.setProveedor(nombreProveedor);
 		Cancion saved = cancionService.createCancion(cancion);
 		return ResponseEntity.ok(saved);
 	}

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.poli.PolisongStock.RegistroCancion.modelo.Cancion;
 import co.edu.poli.PolisongStock.RegistroPedidos.dto.PedidoDto;
+import co.edu.poli.PolisongStock.RegistroPedidos.modelo.Experiencia;
 import co.edu.poli.PolisongStock.RegistroPedidos.modelo.Pedido;
 import co.edu.poli.PolisongStock.RegistroPedidos.service.PedidoService;
 
@@ -28,6 +29,13 @@ public class PedidoController {
 	@Autowired
 	private PedidoService pedidoService;
 	
+	
+	@PostMapping("/{id}")
+	public ResponseEntity<String> addExp(@PathVariable Long id,@RequestBody Experiencia exp){
+		pedidoService.addExperienciaToPedido(id, exp);
+		return ResponseEntity.noContent().build();
+	
+	}
 	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
 	@PostMapping 
 	public ResponseEntity<Pedido> create(@RequestBody Pedido pedido){
@@ -35,6 +43,7 @@ public class PedidoController {
 		return ResponseEntity.ok(saved);
 	
 	}
+
 	@PreAuthorize("hasRole('superusuario')")
 	@GetMapping
 	public ResponseEntity<List<Pedido>> getAll(){
@@ -55,15 +64,10 @@ public class PedidoController {
 		return ResponseEntity.ok(p);
 	}
 	
+	@PreAuthorize("hasRole('superusuario')")
 	@GetMapping("/proveedor/{nombre}")
 	public ResponseEntity<List<Optional<Pedido>>>getByComprador(@PathVariable String nombre){
 		return ResponseEntity.ok(pedidoService.getPedidosByComprador(nombre));
-	}
-	
-	@PreAuthorize("hasRole('superusuario')")
-	@PutMapping("/{id}")
-	public ResponseEntity<String> update(Long id, String updatePedido){
-		return ResponseEntity.ok("pedido actualizado");
 	}
 	
 	@PreAuthorize("hasRole('superusuario')")
