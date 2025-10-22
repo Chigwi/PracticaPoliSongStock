@@ -50,14 +50,39 @@ public class PlaylistService {
 	    return list;
 	  }
 
-	@Transactional(transactionManager = "PlaylistTransactionManager")
-	public boolean deletePlaylist(Long id) {
-	    if (playlistRepository.existsById(id)) {
-	        playlistRepository.deleteById(id);
-	        return true;
-	    }
-	    return false;  // Returns false if ID not found
-	}
+	  @Transactional(transactionManager = "PlaylistTransactionManager")
+	  public boolean deletePlaylist(Long id) {
+	      Optional<Playlist> optionalPlaylist = playlistRepository.findById(id);
+	      
+	      if (optionalPlaylist.isPresent()) {
+	          Playlist playlist = optionalPlaylist.get();
+	          List<Long> cancionIds = playlist.getCanciones();
+
+	          // Verificar si todas las canciones tienen formato vinilo
+	          boolean todasVinilo = true;
+	          for (Long cancionId : cancionIds) {
+	              Optional<Cancion> optionalCancion = cancionRepository.findById(cancionId);
+	              if (optionalCancion.isEmpty() || optionalCancion.get().getFormato() == null ||
+	                  !optionalCancion.get().getFormato().getNombre().equalsIgnoreCase("vinilo")) {
+	                  todasVinilo = false;
+	                  break;
+	              }
+	          }
+
+	          // Si todas son vinilo, eliminar canciones
+	          if (todasVinilo) {
+	              for (Long cancionId : cancionIds) {
+	                  cancionRepository.deleteById(cancionId);
+	              }
+	          }
+
+	          // Eliminar la playlist
+	          playlistRepository.deleteById(id);
+	          return true;
+	      }
+
+	      return false; // No se encontró la playlist
+	  }
 	
 	  @Transactional(transactionManager = "PlaylistTransactionManager", readOnly = true)
 	  public Optional<Playlist> getPlaylistById(Long id) {

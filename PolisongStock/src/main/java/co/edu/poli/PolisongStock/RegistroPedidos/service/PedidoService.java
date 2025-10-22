@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.poli.PolisongStock.RegistroPedidos.dto.PedidoDto;
+import co.edu.poli.PolisongStock.RegistroPedidos.modelo.Experiencia;
 import co.edu.poli.PolisongStock.RegistroPedidos.modelo.Pedido;
 import co.edu.poli.PolisongStock.RegistroPedidos.repository.PedidoRepository;
 
@@ -49,5 +50,19 @@ public class PedidoService {
 	@Transactional(readOnly = true, transactionManager = "pedidosTransactionManager" )
 	public List<Optional<Pedido>> getPedidosByComprador(String nombre){
 		return pedidoRepository.findByComprador(nombre);
+	}
+	
+	@Transactional(transactionManager = "pedidosTransactionManager")
+	public boolean addExperienciaToPedido(Long pedidoId, Experiencia experiencia) {
+	    Optional<Pedido> optionalPedido = pedidoRepository.findById(pedidoId);
+	    
+	    if (optionalPedido.isPresent()) {
+	        Pedido pedido = optionalPedido.get();
+	        pedido.setExperiencia(experiencia); // Asigna la experiencia
+	        pedidoRepository.save(pedido);      // Guarda el pedido actualizado
+	        return true;
+	    }
+	    
+	    return false; // No se encontró el pedido
 	}
 }
