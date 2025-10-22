@@ -102,6 +102,7 @@ public class UsuarioController {
 	@PreAuthorize("hasRole('superusuario')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> delete (@PathVariable Long id){
+		
 		if(usuarioService.deleteUsuario(id)) {
 			return ResponseEntity.ok("usuario eliminado");
 		}else {
