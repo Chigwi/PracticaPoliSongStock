@@ -74,6 +74,13 @@ public class UsuarioService implements UserDetailsService {
     public Optional<Persona> getUsuarioById(Long id) {
         return usuarioRepository.findById(id);
     }
+    
+    public Optional<Persona> getUsuarioByUsername(String username)throws UsernameNotFoundException{
+    	Persona persona = usuarioRepository.findByNombreUsuario(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+    	System.out.println(persona);
+    	return usuarioRepository.findByNombreUsuario(username);
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

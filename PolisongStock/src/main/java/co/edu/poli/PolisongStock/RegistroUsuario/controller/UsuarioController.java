@@ -68,9 +68,14 @@ public class UsuarioController {
 	
 	@PreAuthorize("hasRole('superusuario')")
 	@GetMapping("/{id}")
-	public ResponseEntity<Optional<Persona>> getById(Long id){
+	public ResponseEntity<Optional<Persona>> getById(@PathVariable Long id){
 		return ResponseEntity.ok(usuarioService.getUsuarioById(id));
 		
+	}
+	
+	@GetMapping("/user/{nombreUsuario}")
+	public ResponseEntity<Optional<Persona>> getThisUser(@PathVariable String nombreUsuario){
+		return ResponseEntity.ok(usuarioService.getUsuarioByUsername(nombreUsuario));
 	}
 	
 	// Authenticated user sees their own songs (provider = username)
@@ -96,7 +101,7 @@ public class UsuarioController {
 
 	@PreAuthorize("hasRole('superusuario')")
 	@PutMapping("/{id}")
-	public ResponseEntity<String> update(Long id, String updateUsuario){
+	public ResponseEntity<String> update(@PathVariable Long id, String updateUsuario){
 		return ResponseEntity.ok("usuario actualizado");
 	}
 	@PreAuthorize("hasRole('superusuario')")
