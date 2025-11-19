@@ -111,16 +111,16 @@ public class CarritoComprasService {
         // Build DetallePedido and Pedido
         DetallePedido dp = new DetallePedido();
         dp.setCaniones(new ArrayList());
-        //List <String> nombres = new ArrayList<String>();
+        List <String> nombres = new ArrayList<String>();
         for (ItemCarrito it : cart.getItems()) {
             dp.getCaniones().add(it.getItemId()); // use correct getter for item id
-            /*if(it.getTipoItem().equals("cancion")) {
+            if(it.getTipoItem().equals("cancion")) {
             	String nombre = cancionService.getCancionById(it.getItemId()).get().getNombre();
                 nombres.add("tipoItem: " + it.getTipoItem() + " nombre: " + nombre);
             }else if(it.getTipoItem().equals("playlist")) {
             	String nombre = playlistService.getPlaylistById(it.getIdItem()).get().getNombre();
                 nombres.add("tipoItem: " + it.getTipoItem() + " nombre: " + nombre);
-            }*/
+            }
         }
         Envio env = new Envio();
         env.setEmpresaEnvios("Envia");
@@ -144,7 +144,7 @@ public class CarritoComprasService {
         if (usuario.getCorreos() != null && !usuario.getCorreos().isEmpty()) {
         	double precio = getPrecioTotal(cart);
             Notificacion n = new Notificacion();
-            n.setToEmail(usuario.getCorreos().get(0).getDireccion());
+            n.setToEmail(usuario.getCorreos().get(0).getDireccion());//refractor
             n.setBody(saved.factura(precio));
             n.setSubject("Pedido realizado con Exito");
             notificacionService.sendEmail(n); // use the actual method from your service

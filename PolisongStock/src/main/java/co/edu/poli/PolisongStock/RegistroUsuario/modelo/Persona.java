@@ -55,13 +55,13 @@ public class Persona {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "persona")
 	@Column(name="telefonos")
-	private List<Telefono> telefonos;
+	private List<Telefono> telefonos; //refractor
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "persona")
 	@Column(name="correos")
 	@JsonManagedReference
-	private List<Correo> correos;
+	private List<Correo> correos; //refractor
 	
 	@ManyToOne
 	@JoinColumn(name = "rol")
