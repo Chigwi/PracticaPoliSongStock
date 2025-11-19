@@ -55,6 +55,7 @@ public class Persona {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "persona")
 	@Column(name="telefonos")
+	@JsonManagedReference
 	private List<Telefono> telefonos; //refractor
 	
 	@OneToMany(cascade = CascadeType.ALL)

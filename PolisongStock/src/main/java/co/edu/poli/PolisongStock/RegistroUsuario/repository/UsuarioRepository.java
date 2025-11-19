@@ -15,7 +15,7 @@ public interface UsuarioRepository extends JpaRepository<Persona, Long>{
 	@Query("SELECT p FROM Persona p WHERE p.nombreUsuario = :nombreUsuario")
 	 public Optional<Persona> findByNombreUsuario(String nombreUsuario);
 	
-
+	 @EntityGraph(attributePaths = {"correos","telefonos"})
 	 Optional<Persona> findById(Long id);
 
 
