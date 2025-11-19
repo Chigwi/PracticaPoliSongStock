@@ -98,12 +98,6 @@ public class CarritoComprasService {
             .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado: " + userId));
         CarritoCompras cart = carritoComprasRepository.findByUserId(userId)
             .orElseThrow(() -> new IllegalStateException("No cart for user: " + userId));
-
-        if (usuario.getCorreos() != null) {
-            usuario.getCorreos().size();
-        }
-
-
         if (!pagoRealizado()) {
             return cart; // payment failed - keep cart intact
         }
@@ -141,10 +135,10 @@ public class CarritoComprasService {
 
         // Send notification (guard for nulls)
         
-        if (usuario.getCorreos() != null && !usuario.getCorreos().isEmpty()) {
+        if (usuario.getCorreo() != null) {
         	double precio = getPrecioTotal(cart);
             Notificacion n = new Notificacion();
-            n.setToEmail(usuario.getCorreos().get(0).getDireccion());//refractor
+            n.setToEmail(usuario.getCorreo().getDireccion());//refractor
             n.setBody(saved.factura(precio));
             n.setSubject("Pedido realizado con Exito");
             notificacionService.sendEmail(n); // use the actual method from your service

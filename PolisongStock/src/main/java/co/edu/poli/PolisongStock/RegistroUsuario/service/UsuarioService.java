@@ -78,8 +78,7 @@ public class UsuarioService implements UserDetailsService {
     public Optional<Persona> getUsuarioByUsername(String username)throws UsernameNotFoundException{
     	Optional<Persona> persona = Optional.of(usuarioRepository.findByNombreUsuario(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username)));
-    	System.out.println(persona.get().getTelefonos().get(0).toString());
-    	System.out.println(persona.get().getCorreos().get(0).toString());
+
     	return persona;
     }
 

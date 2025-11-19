@@ -2,6 +2,7 @@ package co.edu.poli.PolisongStock.RegistroUsuario.modelo;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -52,17 +53,13 @@ public class Persona {
 	@Column(name="direccion")
 	private String direccion;
 	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "persona")
-	@Column(name="telefonos")
-	@JsonManagedReference
-	private List<Telefono> telefonos; //refractor
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="telefono")
+	private Telefono telefono; //refractor
 	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "persona")
-	@Column(name="correos")
-	@JsonManagedReference
-	private List<Correo> correos; //refractor
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="correo")
+	private Correo correo; //refractor
 	
 	@ManyToOne
 	@JoinColumn(name = "rol")
@@ -71,16 +68,19 @@ public class Persona {
 	@ElementCollection  // Or a simple List if no complex associations needed
     @CollectionTable(name = "cancionesUsuario", joinColumns = @JoinColumn(name = "idCancion"))
     @Column(name = "canciones")
+	@JsonIgnore
 	private List<Long> canciones;
 	
 	@ElementCollection  // Or a simple List if no complex associations needed
     @CollectionTable(name = "playlistsUsuario", joinColumns = @JoinColumn(name = "idPlaylist"))
     @Column(name = "playlists")
+	@JsonIgnore
 	private List<Long> playlists;
 	
 	@ElementCollection  // Or a simple List if no complex associations needed
     @CollectionTable(name = "pedidosUsuario", joinColumns = @JoinColumn(name = "idpedidos"))
     @Column(name = "pedidos")
+	@JsonIgnore
 	private List<Long> pedidos;
 	
 }
