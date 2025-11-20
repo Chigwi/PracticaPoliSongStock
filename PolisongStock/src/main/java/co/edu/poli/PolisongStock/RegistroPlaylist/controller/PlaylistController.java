@@ -53,7 +53,7 @@ public class PlaylistController {
 	}
 	
 	@GetMapping("/proveedor/{nombre}")
-	public ResponseEntity<List<Optional<Playlist>>>getByProveedor(@PathVariable String nombre){
+	public ResponseEntity<List<PlaylistWithSongsDto>>getByProveedor(@PathVariable String nombre){
 		return ResponseEntity.ok(playlistService.getPlaylistsByProveedor(nombre));
 	}
 	@PutMapping("/{id}")

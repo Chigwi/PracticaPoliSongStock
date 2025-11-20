@@ -169,8 +169,14 @@ public class PlaylistService {
 	    }
 	    
 	    @Transactional(readOnly = true,transactionManager = "PlaylistTransactionManager")
-	    public List<Optional<Playlist>>getPlaylistsByProveedor(String nombre){
-	    	return playlistRepository.findByProveedor(nombre);
+	    public List<PlaylistWithSongsDto>getPlaylistsByProveedor(String nombre){
+	    	List<Optional<Playlist>>p = playlistRepository.findByProveedor(nombre);
+	    	ArrayList<PlaylistWithSongsDto> res = new ArrayList<PlaylistWithSongsDto>();
+	    	
+	    	for (Optional<Playlist> optional : p) {
+				res.add(getPlaylistWithSongsById(optional.get().getIdPlaylist()));
+			}
+	    	return res;
 	    }
 
 }

@@ -23,6 +23,7 @@ import co.edu.poli.PolisongStock.RegistroCancion.modelo.Cancion;
 import co.edu.poli.PolisongStock.RegistroCancion.service.CancionService;
 import co.edu.poli.PolisongStock.RegistroPedidos.modelo.Pedido;
 import co.edu.poli.PolisongStock.RegistroPedidos.service.PedidoService;
+import co.edu.poli.PolisongStock.RegistroPlaylist.dto.PlaylistWithSongsDto;
 import co.edu.poli.PolisongStock.RegistroPlaylist.modelo.Playlist;
 import co.edu.poli.PolisongStock.RegistroPlaylist.service.PlaylistService;
 import co.edu.poli.PolisongStock.RegistroUsuario.modelo.Persona;
@@ -87,7 +88,7 @@ public class UsuarioController {
 
     // Authenticated user sees their own playlists (provider = username)
     @GetMapping("/misPlaylist")
-    public ResponseEntity<List<Optional<Playlist>>> getMisPlaylist(@AuthenticationPrincipal AppUserDetails currentUser) {
+    public ResponseEntity<List<PlaylistWithSongsDto>> getMisPlaylist(@AuthenticationPrincipal AppUserDetails currentUser) {
         String nombreProveedor = currentUser.getUsername();
         return ResponseEntity.ok(playlistService.getPlaylistsByProveedor(nombreProveedor));
     }
