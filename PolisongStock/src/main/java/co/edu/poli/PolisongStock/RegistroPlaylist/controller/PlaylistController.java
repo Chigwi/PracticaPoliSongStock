@@ -33,12 +33,22 @@ public class PlaylistController {
 	private PlaylistService playlistService;
 	
 	@PreAuthorize("hasRole('basicusuario') or hasRole('superusuario')")
-	@PostMapping 
-	public ResponseEntity<Playlist> create(@RequestBody PlaylistCreateDto playlist,@AuthenticationPrincipal AppUserDetails currentUser){
-		String nombreProveedor = currentUser.getUsername();
-		Playlist saved = playlistService.findOrCreatePlaylist(playlist);
-		saved.setProveedor(nombreProveedor);
-		return ResponseEntity.ok(saved);
+	@PostMapping
+	public ResponseEntity<Playlist> create(@RequestBody PlaylistCreateDto playlist, @AuthenticationPrincipal AppUserDetails currentUser) {
+	    System.out.println("Usuario autenticado: " + currentUser);  // Log para verificar
+	    if (currentUser == null) {
+	        return ResponseEntity.status(401).build();  // Si es null, devolver error
+	    }
+	    String nombreProveedor = currentUser.getUsername();
+	    System.out.println("Nombre del proveedor: " + nombreProveedor);  // Log para verificar
+	    
+	    Playlist saved = playlistService.findOrCreatePlaylist(playlist);
+	    saved.setProveedor(nombreProveedor);
+	    playlistService.save(saved);
+	    System.out.println("Proveedor asignado: " + saved.getProveedor());  // Log después de asignar
+	    
+	    
+	    return ResponseEntity.ok(saved);
 	}
 	
 	@GetMapping

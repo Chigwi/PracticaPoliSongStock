@@ -178,5 +178,9 @@ public class PlaylistService {
 			}
 	    	return res;
 	    }
+		  @Transactional(transactionManager = "cancionTransactionManager")
+		public Playlist save(Playlist in) {
+			 return playlistRepository.save(in);
+		  }
 
 }
