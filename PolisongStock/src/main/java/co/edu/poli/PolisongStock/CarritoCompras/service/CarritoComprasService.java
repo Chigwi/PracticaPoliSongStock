@@ -112,7 +112,7 @@ public class CarritoComprasService {
             	String nombre = cancionService.getCancionById(it.getItemId()).get().getNombre();
                 nombres.add("tipoItem: " + it.getTipoItem() + " nombre: " + nombre);
             }else if(it.getTipoItem().equals("playlist")) {
-            	String nombre = playlistService.getPlaylistById(it.getIdItem()).get().getNombre();
+            	String nombre = playlistService.getPlaylistById(it.getItemId()).get().getNombre();
                 nombres.add("tipoItem: " + it.getTipoItem() + " nombre: " + nombre);
             }
         }

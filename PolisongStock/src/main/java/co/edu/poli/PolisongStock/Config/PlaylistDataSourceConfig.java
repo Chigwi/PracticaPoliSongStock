@@ -42,6 +42,9 @@ public class PlaylistDataSourceConfig {
 	    config.setMaxLifetime(1800000); // 30 min
 	    config.setConnectionTimeout(30000);
 
+	    // Supabase trabaja mejor con autocommit
+	    config.setAutoCommit(false);
+
 	    // Ayuda a detectar fugas de conexiones
 	    config.setLeakDetectionThreshold(20000);
 
