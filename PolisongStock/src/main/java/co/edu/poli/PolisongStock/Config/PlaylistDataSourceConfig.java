@@ -26,27 +26,35 @@ import com.zaxxer.hikari.HikariDataSource;
 )
 public class PlaylistDataSourceConfig {
 
-    @Bean(name = "playlistDataSource")
-    public DataSource dataSource() {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:postgresql://aws-1-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require");
-        config.setUsername("postgres.fqrjhkplaxmoqkvfdfus");
-        config.setPassword("Servidor123");
-        config.setDriverClassName("org.postgresql.Driver");
-        config.setMaximumPoolSize(10);
-        config.setMinimumIdle(5);
-        config.setConnectionTestQuery("SELECT 1");
-        config.setConnectionTimeout(30000);
-        config.setValidationTimeout(5000);
+	@Bean(name = "playlistDataSource")
+	public DataSource dataSource() {
 
-        config.addDataSourceProperty("prepareThreshold", "0");
-        config.addDataSourceProperty("preferQueryMode", "simple");
+	    HikariConfig config = new HikariConfig();
+	    config.setJdbcUrl("jdbc:postgresql://aws-1-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require");
+	    config.setUsername("postgres.fqrjhkplaxmoqkvfdfus");
+	    config.setPassword("Servidor123");
+	    config.setDriverClassName("org.postgresql.Driver");
 
-        // Para pruebas deja autoCommit true
-        config.setAutoCommit(false);
+	    // *** CONFIGURACIÓN SEGURA PARA SUPABASE ***
+	    config.setMaximumPoolSize(3);   // antes 10 → saturaba Postgres
+	    config.setMinimumIdle(1);       // antes 5
+	    config.setIdleTimeout(30000);   // 30s
+	    config.setMaxLifetime(1800000); // 30 min
+	    config.setConnectionTimeout(30000);
 
-        return new HikariDataSource(config);
-    }
+	    // Supabase trabaja mejor con autocommit
+	    config.setAutoCommit(true);
+
+	    // Ayuda a detectar fugas de conexiones
+	    config.setLeakDetectionThreshold(20000);
+
+	    // Evitar queries complejas en pooler
+	    config.addDataSourceProperty("prepareThreshold", "0");
+	    config.addDataSourceProperty("preferQueryMode", "simple");
+
+	    return new HikariDataSource(config);
+	}
+
 
     @Bean(name = "PlaylistEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(
